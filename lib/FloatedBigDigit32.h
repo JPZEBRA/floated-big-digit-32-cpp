@@ -1,12 +1,18 @@
 /* FLOATED BIG DIGIT CLASS */
 /* CREATE  2021.02.06      */
 /* REVISED 2021.05.17      */
-/* Ver 0.2.1               */
+/* Ver 0.3.1               */
 /* Original by K-ARAI      */
 
 
 /****************************************************************************/
 /****************************************************************************/
+
+#define floatedBigDigitERR -1
+#define floatedBigDigitOK 0
+
+/****************************************************************************/
+
 
 int SetRandomSeed(int seed);
 
@@ -61,6 +67,10 @@ class FloatedBigDigit32 {
 
         int setAtan2(int y,int x);
         int setAtanDiv(int d);
+
+        int Power_main(FloatedBigDigit32* V,bool boost);
+        int PowerDiv_boost(FloatedBigDigit32* V);
+
 
     /****************************************************************************/
 
@@ -163,6 +173,21 @@ class FloatedBigDigit32 {
         int SetE();
 
         int SetPI();
+
+        int SetExp(FloatedBigDigit32* V);
+
+        int SetLn(FloatedBigDigit32* V);
+        int SetLog(FloatedBigDigit32* V);
+        int SetLog2(FloatedBigDigit32* V);
+
+    /****************************************************************************/
+
+
+        int power(int n);
+
+        int Power(FloatedBigDigit32* V);
+
+        int PowerDiv(FloatedBigDigit32* V);
 
     /****************************************************************************/
 

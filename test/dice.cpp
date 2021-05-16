@@ -3,31 +3,6 @@
 #include <string.h>
 #include <time.h>
 
-#include "FloatedBigDigit32.h"
-
-int ValStr(char* buffer,int keta,FloatedBigDigit32* V) {
-
-    memset(buffer,'0',keta);
-
-    int ptr = keta - 1;
-
-    for(int i=V->zero_pos();i>=0;i--) {
-
-       int val = V->digit(i);
-
-       for(int j=0;j<5;j++) {
-            char p = '0' + ( val % 10 );
-            buffer[ptr--] = p;
-            val /= 10;
-       }
-
-    }
-
-    buffer[keta+1] = '\0';
-
-    return 0;
-}
-
 int main(int argc,const char **argv) {
 
     char buff[200];
