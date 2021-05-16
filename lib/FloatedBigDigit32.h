@@ -1,7 +1,7 @@
 /* FLOATED BIG DIGIT CLASS */
 /* CREATE  2021.02.06      */
-/* REVISED 2021.05.15      */
-/* Ver 0.201  ( U.C. )     */
+/* REVISED 2021.05.17      */
+/* Ver 0.2.1               */
 /* Original by K-ARAI      */
 
 
@@ -148,6 +148,14 @@ class FloatedBigDigit32 {
 
         int setDoubleFactorial(int n);
         int SetDoubleFactorial(FloatedBigDigit32* V);
+
+    /****************************************************************************/
+
+        int setSequence(int n,int k);
+        int SetSequence(FloatedBigDigit32* N,FloatedBigDigit32* K);
+
+        int setCombination(int n,int k);
+        int SetCombination(FloatedBigDigit32* N,FloatedBigDigit32* K);
 
 
     /****************************************************************************/

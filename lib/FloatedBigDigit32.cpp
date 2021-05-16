@@ -1,7 +1,7 @@
 /* FLOATED BIG DIGIT CLASS */
 /* CREATE  2021.02.06      */
-/* REVISED 2021.05.11      */
-/* Ver 0.113  ( U.C. )     */
+/* REVISED 2021.05.17      */
+/* Ver 0.2.1               */
 /* Original by K-ARAI      */
 
 #include <stdio.h>
@@ -1600,6 +1600,152 @@ int FloatedBigDigit32::SetDoubleFactorial(FloatedBigDigit32* V) {
     this->Copy(R);
 
     delete R;
+    delete C;
+
+    return floatedBigDigitOK;
+
+}
+
+/****************************************************************************/
+
+int FloatedBigDigit32::setSequence(int n,int k) {
+
+    if(n<0) return floatedBigDigitERR;
+    if(k<0) return floatedBigDigitERR;
+
+    FloatedBigDigit32* N = new FloatedBigDigit32();
+    N->set(n);
+
+    FloatedBigDigit32* K = new FloatedBigDigit32();
+    K->set(k);
+
+    int ret = this->SetSequence(N,K);
+
+    delete N;
+    delete K;
+
+    return ret;
+
+}
+
+/****************************************************************************/
+
+int FloatedBigDigit32::SetSequence(FloatedBigDigit32* N,FloatedBigDigit32* K) {
+
+    if(N->isMinus()) return floatedBigDigitERR;
+    if(N->isSmall()) return floatedBigDigitERR;
+    if(K->isMinus()) return floatedBigDigitERR;
+    if(K->isSmall()) return floatedBigDigitERR;
+
+    if(N->isZero()) {
+        this->set(0);
+        return floatedBigDigitOK;
+    }
+
+    if(K->isZero()) {
+        this->set(1);
+        return floatedBigDigitOK;
+     }
+
+    if(K->Compare(N)>0) {
+        this->set(0);
+        return floatedBigDigitOK;
+    }
+
+    FloatedBigDigit32* R = new FloatedBigDigit32();
+    FloatedBigDigit32* C = new FloatedBigDigit32();
+    FloatedBigDigit32* A = new FloatedBigDigit32();
+
+    A->Copy(N);
+    A->Sub(K);
+
+    R->set(1);
+    C->Copy(N);
+
+    while(C->Compare(A)>0) {
+        R->Mul(C);
+        C->sub(1);
+    }
+
+    this->Copy(R);
+
+    delete R;
+    delete C;
+    delete A;
+
+    return floatedBigDigitOK;
+
+}
+
+/****************************************************************************/
+
+int FloatedBigDigit32::setCombination(int n,int k) {
+
+    if(n<0) return floatedBigDigitERR;
+    if(k<0) return floatedBigDigitERR;
+
+    FloatedBigDigit32* N = new FloatedBigDigit32();
+    N->set(n);
+
+    FloatedBigDigit32* K = new FloatedBigDigit32();
+    K->set(k);
+
+    int ret = this->SetCombination(N,K);
+
+    delete N;
+    delete K;
+
+    return ret;
+
+}
+
+/****************************************************************************/
+
+int FloatedBigDigit32::SetCombination(FloatedBigDigit32* N,FloatedBigDigit32* K) {
+
+
+    if(N->isMinus()) return floatedBigDigitERR;
+    if(N->isSmall()) return floatedBigDigitERR;
+    if(K->isMinus()) return floatedBigDigitERR;
+    if(K->isSmall()) return floatedBigDigitERR;
+
+    if(N->isZero()) {
+        this->set(0);
+        return floatedBigDigitOK;
+    }
+
+    if(K->isZero()) {
+        this->set(1);
+        return floatedBigDigitOK;
+    }
+
+    if(K->Compare(N)>0) {
+        this->set(0);
+        return floatedBigDigitOK;
+    }
+
+    FloatedBigDigit32* R = new FloatedBigDigit32();
+    FloatedBigDigit32* B = new FloatedBigDigit32();
+    FloatedBigDigit32* C = new FloatedBigDigit32();
+
+    B->Copy(N);
+    B->Sub(K);
+    B->add(1);
+    C->set(1);
+
+    R->set(1);
+
+    do {
+        R->Mul(B);
+        R->Div(C);
+        B->add(1);
+        C->add(1);
+    } while(C->Compare(K)<=0);
+
+    this->Copy(R);
+
+    delete R;
+    delete B;
     delete C;
 
     return floatedBigDigitOK;

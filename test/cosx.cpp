@@ -9,7 +9,7 @@ int main(int argc,const char **argv) {
     char buff[10000];
 
     if(argc!=2) {
-        printf("USAGE: sin KETA\n");
+        printf("USAGE: cosx KETA\n");
         return 0;
     }
 
