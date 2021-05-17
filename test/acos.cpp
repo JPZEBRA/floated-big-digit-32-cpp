@@ -9,7 +9,7 @@ int main(int argc,const char **argv) {
     char buff[10000];
 
     if(argc!=2) {
-        printf("USAGE: asin KETA\n");
+        printf("USAGE: acos KETA\n");
         return 0;
     }
 

@@ -1,7 +1,7 @@
 /* FLOATED BIG DIGIT CLASS */
 /* CREATE  2021.02.06      */
 /* REVISED 2021.05.17      */
-/* Ver 0.4.1               */
+/* Ver 0.5.1               */
 /* Original by K-ARAI      */
 
 
@@ -87,10 +87,10 @@ class FloatedBigDigit32 {
         int Copy(FloatedBigDigit32* V);
 
         int size();
-        int zero_pos();
+        int valid_size();
         int order();
 
-        int valid_size();
+        int zero_pos();
         int digit(int idx);
         int value(int idx);
 
@@ -209,6 +209,13 @@ class FloatedBigDigit32 {
 
         int SetAsin(FloatedBigDigit32* V);
         int SetAcos(FloatedBigDigit32* V);
+
+    /****************************************************************************/
+
+        int SetAsinh(FloatedBigDigit32* V);
+        int SetAsinhB(FloatedBigDigit32* V);
+        int SetAcosh(FloatedBigDigit32* V);
+        int SetAtanh(FloatedBigDigit32* V);
 
     /****************************************************************************/
 
