@@ -1,7 +1,7 @@
 /* FLOATED BIG DIGIT CLASS */
 /* CREATE  2021.02.06      */
 /* REVISED 2021.05.17      */
-/* Ver 0.3.1               */
+/* Ver 0.4.1               */
 /* Original by K-ARAI      */
 
 #include <stdio.h>
@@ -2601,9 +2601,9 @@ int FloatedBigDigit32::SetSin(FloatedBigDigit32* V) {
         this->Div(C);
         C->add(1);
         this->Div(C);
-    } while(C->compare(floatedBigDigit_LMT*2) < 0 && !this->lastBit());
+    } while(C->compare(floatedBigDigit_LM2) < 0 && !this->lastBit());
 
-    bool stop = ( C->compare(floatedBigDigit_LMT*2)>=0 );
+    bool stop = ( C->compare(floatedBigDigit_LM2)>=0 );
 
     this->set(1);
     while(C->compare(1)>0) {
@@ -2707,9 +2707,9 @@ int FloatedBigDigit32::SetCos(FloatedBigDigit32* V) {
         this->Div(C);
         C->add(1);
         this->Div(C);
-    } while(C->compare(floatedBigDigit_LMT*2) < 0 && !this->lastBit());
+    } while(C->compare(floatedBigDigit_LM2) < 0 && !this->lastBit());
 
-    bool stop = ( C->compare(floatedBigDigit_LMT*2)>=0 );
+    bool stop = ( C->compare(floatedBigDigit_LM2)>=0 );
 
     this->set(1);
     while(C->compare(2)>=0) {
@@ -2778,10 +2778,9 @@ int FloatedBigDigit32::SetSinh(FloatedBigDigit32* V) {
         this->Mul(F);
         C->add(1);
         this->Div(C);
-    } while(C->compare(floatedBigDigit_LMT*2) < 0 && !this->lastBit());
+    } while(C->compare(floatedBigDigit_LM2) < 0 && !this->lastBit());
 
-    bool stop = ( C->compare(floatedBigDigit_LMT*2)>=0 );
-
+    bool stop = ( C->compare(floatedBigDigit_LM2)>=0 );
 
     this->set(1);
     while(C->compare(1)>0) {
@@ -2830,9 +2829,9 @@ int FloatedBigDigit32::SetCosh(FloatedBigDigit32* V) {
         this->Mul(V);
         C->add(1);
         this->Div(C);
-    } while(C->compare(floatedBigDigit_LMT*2) < 0 && !this->lastBit());
+    } while(C->compare(floatedBigDigit_LM2) < 0 && !this->lastBit());
 
-    bool stop = ( C->compare(floatedBigDigit_LMT*2)>=0 );
+    bool stop = ( C->compare(floatedBigDigit_LM2)>=0 );
 
     this->set(1);
     while(C->compare(1)>0) {
@@ -2876,6 +2875,279 @@ int FloatedBigDigit32::SetTanh(FloatedBigDigit32* V) {
 
 }
 
+
+/****************************************************************************/
+
+int FloatedBigDigit32::SetAtan2(FloatedBigDigit32* Y, FloatedBigDigit32* X) {
+
+    if(Y->isEmpty()) {
+        if(X->compare(0)>=0) {
+            this->set(0);
+        } else {
+            this->SetPI();
+        }
+        return floatedBigDigitOK;
+    }
+
+    if(X->isEmpty()) {
+        this->SetPI();
+        if(Y->compare(0)>=0) {
+            this->div( 2);
+        } else {
+            this->div(-2);
+        }
+        return floatedBigDigitOK;
+    }
+
+    FloatedBigDigit32* C = new FloatedBigDigit32();
+
+    if(!Y->isSmall()) {
+
+        C->Copy(X);
+        C->Div(Y);
+
+        if(!C->isSmall() && C->isSeed()) {
+            int ret = this->setAtanDiv(C->digit(0));
+            delete C;
+            return ret;
+        }
+    }
+
+    C->Copy(Y);
+    C->Div(X);
+
+    int ret = this->SetAtan(C);
+
+    delete C;
+
+    if(X->compare(0)>0) return ret;
+
+    FloatedBigDigit32* P = new FloatedBigDigit32();
+    P->SetPI();
+
+   if(Y->compare(0)>0) this->Add(P);
+   if(Y->compare(0)<0) this->Sub(P);
+
+    delete P;
+
+    return ret;
+
+}
+
+/****************************************************************************/
+
+int FloatedBigDigit32::SetAtan(FloatedBigDigit32* V) {
+
+    if(V->compare(0)==0) {
+        this->set(0);
+        return floatedBigDigitOK;
+    }
+
+    FloatedBigDigit32* C = new FloatedBigDigit32();
+
+    if(V->isMinus()) {
+        C->Copy(V);
+        C->minus = false;
+        int ret = this->SetAtan(C);
+        this->minus = true;
+        delete C;
+        return ret;
+    }
+
+    FloatedBigDigit32* P = new FloatedBigDigit32();
+
+    P->SetPI();
+    P->div(2);
+
+    if(V->compare(1)==0) {
+        P->div(2);
+        this->Copy(P);
+        delete C;
+        delete P;
+        return floatedBigDigitOK;
+    }
+
+    if(V->compare(1)>0) {
+        C->set(1);
+        C->Div(V);
+        int ret = this->SetAtan(C);
+        this->Sub(P);
+        this->minus = false;
+        delete C;
+        delete P;
+        return ret;
+    }
+
+    bool rf = V->isMinus();
+    V->minus = false;
+
+    P->set(0);
+    C->Copy(V);
+    do {
+        C->Mul(V);        
+        C->Mul(V);
+        P->add(1);
+    } while(P->compare(floatedBigDigit_LMT) < 0 && !C->lastBit());
+
+    bool stop = ( P->compare(floatedBigDigit_LMT)>=0 );
+
+    this->set(1);
+    while(P->compare(1)>=0) {
+
+        C->Copy(P);
+        C->mul(2);
+        C->sub(1);
+        this->Mul(C);
+
+        this->Mul(V);
+        this->Mul(V);
+
+        C->Copy(P);
+        C->mul(2);
+        C->add(1);
+        this->Div(C);
+
+        this->sub(1);
+        this->minus = false;
+
+        P->sub(1);
+    }
+
+    this->Mul(V);
+
+    this->minus = rf;
+    V->minus = rf;
+
+    delete C;
+    delete P;
+
+    if(stop) return floatedBigDigitERR;
+
+    return floatedBigDigitOK;
+
+}
+
+
+/****************************************************************************/
+
+int FloatedBigDigit32::SetAsin(FloatedBigDigit32* V) {
+
+    FloatedBigDigit32* F = new FloatedBigDigit32();
+
+    F->Copy(V);
+
+    bool rf = F->minus;
+    F->minus = false;
+
+    if(F->compare(1)>0) {
+        this->overflow();
+        delete F;
+        return floatedBigDigitERR;
+    }
+
+    if(F->compare(1)==0) {
+        this->SetPI();
+        this->div(2);
+        this->minus = rf;
+        delete F;
+        return floatedBigDigitOK;
+    }
+
+
+    FloatedBigDigit32* C = new FloatedBigDigit32();
+
+    C->set(1);
+
+    this->Copy(F);
+    while(C->compare(floatedBigDigit_LM2) < 0 && !this->lastBit()) {
+        this->Mul(F);
+        this->Mul(F);
+        C->add(1);
+        C->add(1);
+    }
+
+    bool stop = ( C->compare(floatedBigDigit_LM2)>=0 );
+
+    this->set(1);
+    while(C->compare(1)>=0) {
+
+        this->Mul(F);
+
+        this->Mul(C);
+        C->add(1);
+        this->Div(C);
+        C->sub(1);
+
+        this->Mul(F);
+        this->Mul(C);
+        C->add(2);
+        this->Div(C);
+        C->sub(4);
+
+        this->add(1);
+
+    }
+
+    this->Mul(F);
+
+    this->minus = rf;
+
+    delete F;
+    delete C;
+
+    if(stop) return floatedBigDigitERR;
+
+    return floatedBigDigitOK;
+
+}
+
+/****************************************************************************/
+
+int FloatedBigDigit32::SetAcos(FloatedBigDigit32* V) {
+
+    FloatedBigDigit32* F = new FloatedBigDigit32();
+
+    F->Copy(V);
+
+    bool rf = F->minus;
+    F->minus = false;
+
+    if(F->compare(1)>0) {
+        this->overflow();
+        delete F;
+        return floatedBigDigitERR;
+    }
+
+    if(F->compare(1)==0) {
+        if(rf) {
+            this->SetPI();
+        } else {
+            this->set(0);
+        }
+        delete F;
+        return floatedBigDigitOK;
+    }
+
+    int ret = this->SetAsin(F);
+
+    F->SetPI();
+    F->div(2);
+
+    this->Sub(F);
+    this->minus = false;
+
+    if(rf) {
+        F->SetPI();
+        F->Sub(this);
+        this->Copy(F);
+    }
+
+
+    delete F;
+
+    return ret;
+
+}
 
 /****************************************************************************/
 
