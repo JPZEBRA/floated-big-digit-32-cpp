@@ -38,7 +38,7 @@ int Store(FloatedBigDigit32* V) {
     char buff[100];
     if(cash_cnt2>=cash2_max) return -1;
     V->toString2(buff,fketa);
-    memcpy(&cash_mem2[fketa*cash_cnt2++],buff,fketa);
+    memcpy(&cash_mem2[(fketa+1)*cash_cnt2++],buff,fketa+1);
     return 0;
 }
 
@@ -52,18 +52,19 @@ int Load(int idx,FloatedBigDigit32* V) {
     if(cash_cnt2==0) return -1;
     if(idx>=cash_cnt2) return -1;
     V->set(0);
-    int ptr =fketa*idx;
+    int ptr =(fketa+1)*idx + 1;
     for(int i=0;i<fketa;i++) {
         V->mul(10);
         V->add(cash_mem2[ptr++] - '0');
     }
+
     return 0;
 }
 
 
 int main(int argc,const char **argv) {
 
-    char buff[100];
+    char buff[1000];
 
     if(argc!=2) {
         printf("USAGE : primes KETA\n");
@@ -80,7 +81,7 @@ int main(int argc,const char **argv) {
     cash_cnt1 = 0;
 
     fketa = KETA;
-    cash_mem2 = (char*) malloc(fketa*cash2_max);
+    cash_mem2 = (char*) malloc((fketa+1)*cash2_max);
     cash_cnt2 = 0;
 
     FloatedBigDigit32* CNT1 = new FloatedBigDigit32();
@@ -133,7 +134,7 @@ int main(int argc,const char **argv) {
             Store(VAL);
 
             VAL->toString2(buff,KETA);
-            printf("/%s",buff);
+            printf("%s",buff);
 
         }
 
