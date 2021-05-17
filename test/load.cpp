@@ -24,6 +24,18 @@ int main(int argc,const char **argv) {
     VAL->toString(buff,10000);
 
     printf("%s\n",buff);
+
+    VAL->toString(buff,10000,false);
+
+    printf("%s\n",buff);
+
+    VAL->toString2(buff,50);
+
+    printf("%s\n",buff);
+  
+    VAL->toString2(buff,50,30);
+
+    printf("%s\n",buff);
   
     delete VAL;
 

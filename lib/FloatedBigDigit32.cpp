@@ -1,7 +1,7 @@
 /* FLOATED BIG DIGIT CLASS */
 /* CREATE  2021.02.06      */
 /* REVISED 2021.05.17      */
-/* Ver 0.6.3               */
+/* Ver 0.6.4               */
 /* Original by K-ARAI      */
 
 #include <stdio.h>
@@ -1021,26 +1021,42 @@ int FloatedBigDigit32::footString(char* str,int n) {
 
 /****************************************************************************/
 
-int FloatedBigDigit32::toString2(char* str,int n) {
+int FloatedBigDigit32::toString2(char* str,int keta,int small) {
 
-    memset(str,'0',n);
-    str[n] = '\0';
+    int ptr;
 
-    int ptr = n - 1;
+    ++keta;
 
-    if(this->isOver() || this->isMinus() || this->isSmall()) {
-        memset(str,'*',n);
+    int len = keta;
+    if (small>0) len += small + 1;
+
+    memset(str,'0',len);
+    str[len] = '\0';
+    if (small>0) str[keta] = '.';
+
+    if(this->isMinus()) {
+        str[0] = '-';
+    } else {
+        str[0] = '+';
+    }
+
+    ptr = keta - 1;
+
+    if(this->isOver()){
+        memset(str,'*',len);
+       if (small>0) str[keta] = '.';
         return floatedBigDigitERR;
     }
 
     for(int i=this->zero_pos();i>=0;i--) {
 
-       int val = this->digit(i);
+        int val = this->digit(i);
 
-       for(int j=0;j<5;j++) {
-            if(ptr<0) {
+        for(int j=0;j<5;j++) {
+            if(ptr<1) {
                 if(val>0) {
-                    memset(str,'*',n);
+                    memset(str,'*',len);
+                    if (small>0) str[keta] = '.';
                     return floatedBigDigitERR;
                 }
             } else {
@@ -1048,7 +1064,24 @@ int FloatedBigDigit32::toString2(char* str,int n) {
                 str[ptr--] = p;
                 val /= 10;
             }
-       }
+        }
+
+    }
+
+    for( int i=1;i<=(small-1)/5+1;i++) {
+
+        int val = this->digit(this->zero_pos()+i);
+
+        ptr = keta + 1 + i*5;
+
+        for(int j=0;j<5;j++) {
+            if(ptr<len) {
+              char p = '0' + ( val % 10 );
+              str[ptr] = p;
+             }
+             ptr--;
+             val /= 10;
+        }
 
     }
 
