@@ -1,7 +1,7 @@
 /* FLOATED BIG DIGIT CLASS */
 /* CREATE  2021.02.06      */
 /* REVISED 2021.05.17      */
-/* Ver 0.5.1               */
+/* Ver 0.6.1               */
 /* Original by K-ARAI      */
 
 #include <stdio.h>
@@ -136,6 +136,89 @@ int FloatedBigDigit32::set(int val) {
         return floatedBigDigitOK;
 
 }   
+
+/****************************************************************************/
+
+int FloatedBigDigit32::Set(const char* str) {
+
+    bool readError = false;
+    bool valMinus = false;
+    int idx = 0;
+    char rdc;
+
+    this->clear();
+
+    //STEP 0
+    rdc = str[idx];
+    if(rdc=='+') { ++idx; valMinus = false; }
+    if(rdc=='-') { ++idx; valMinus = true; }
+
+    //STEP 1
+    do {
+        rdc = str[idx++];
+        if(rdc=='\0' || rdc=='.' || rdc=='e' || rdc == 'E' ) break;
+        if(rdc>='0' && rdc<='9') {
+            this->mul(10);
+            this->add(rdc-'0');
+        } else {
+            readError = true;
+        }
+    } while(!readError);
+
+    //STEP 2
+    if(rdc=='.') {
+        int ord = 0;
+        do {
+            rdc = str[idx++];
+            if(rdc=='\0' || rdc=='e' || rdc == 'E' ) break;
+            if(rdc>='0' && rdc<='9') {
+                this->mul(10);
+                this->add(rdc-'0');
+                ++ord;
+            } else {
+                readError = true;
+            }
+         } while(!readError);
+
+         for(int i=0;i<ord;i++) this->div(10);
+    }
+
+    //STEP 3
+    if(rdc=='e' || rdc == 'E' ) {
+
+        bool odm = false;
+        int odn = 0;
+
+        rdc = str[idx];
+        if(rdc=='+') { ++idx; odm = false; }
+        if(rdc=='-') { ++idx; odm = true; }
+
+        do {
+            rdc = str[idx++];
+            if(rdc=='\0') break;
+            if(rdc>='0' && rdc<='9') {
+                odn *= 10;
+                odn += ( rdc-'0');
+            } else {
+                readError = true;
+            }
+        } while(!readError);
+
+         if(!odm) for(int i=0;i<odn;i++) this->mul(10);
+         if( odm) for(int i=0;i<odn;i++) this->div(10);
+
+    }
+
+    this->minus = valMinus;
+
+    if(readError) {
+        this->overflow();
+        return floatedBigDigitERR;
+    }
+
+    return floatedBigDigitOK;
+
+}
 
 /****************************************************************************/
 

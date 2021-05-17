@@ -84,6 +84,7 @@ class FloatedBigDigit32 {
         int clear();
         int set(int val);
 
+        int Set(const char* str);
         int Copy(FloatedBigDigit32* V);
 
         int size();
