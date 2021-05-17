@@ -50,6 +50,8 @@ class FloatedBigDigit32 {
         bool lastBit();
         bool overflow();
 
+        bool checkOver();
+
         int shift(int val);
         int shiftSmall(int val);
         int shiftMax();
@@ -92,7 +94,6 @@ class FloatedBigDigit32 {
         int digit(int idx);
         int value(int idx);
 
-        bool checkOver();
         bool isMinus();
         bool isSmall();
         bool isSeed();
@@ -194,6 +195,12 @@ class FloatedBigDigit32 {
         int SetSin(FloatedBigDigit32* V);
         int SetCos(FloatedBigDigit32* V);
         int SetTan(FloatedBigDigit32* V);
+
+    /****************************************************************************/
+
+        int SetSinh(FloatedBigDigit32* V);
+        int SetCosh(FloatedBigDigit32* V);
+        int SetTanh(FloatedBigDigit32* V);
 
 
 };
