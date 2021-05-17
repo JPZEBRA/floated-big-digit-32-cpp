@@ -1,7 +1,7 @@
 /* FLOATED BIG DIGIT CLASS */
 /* CREATE  2021.02.06      */
 /* REVISED 2021.05.17      */
-/* Ver 0.6.2               */
+/* Ver 0.6.3               */
 /* Original by K-ARAI      */
 
 #include <stdio.h>
@@ -909,7 +909,7 @@ int FloatedBigDigit32::Compare(FloatedBigDigit32* V) {
 
 int FloatedBigDigit32::toString(char* str,int n,bool rawdata) {
 
-    if(n<this->N*(floatedBigDigit_K+1)+8) return floatedBigDigitERR;
+    if(n<(this->N+1)*(floatedBigDigit_K+1)+8) return floatedBigDigitERR;
 
     int ptr = 0;
     int shift = 0;
@@ -932,7 +932,7 @@ int FloatedBigDigit32::toString(char* str,int n,bool rawdata) {
         str[ptr++] = '+';
     }
 
-    for(int i=0;i<this->N;i++) {
+    for(int i=0;i<=this->N;i++) {
         int val = AA->Val[i];
         int p = floatedBigDigit_unit;
         for(int j=0;j<floatedBigDigit_K;j++) {
