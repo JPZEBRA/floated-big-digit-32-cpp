@@ -12,7 +12,7 @@ AVAILABLE OPERATION & FUNCTIONS :
 
 Add Sub Mul Div Mod Pow nRoot Exp Ln Log Log2
 
-nDk nPk nCk n! n!!
+Rnd nDk nPk nCk n! n!!
 
 Sin Cos Tan Asin Acos Atan Atan2
 
