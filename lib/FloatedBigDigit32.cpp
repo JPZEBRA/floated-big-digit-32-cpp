@@ -1,7 +1,7 @@
 /* FLOATED BIG DIGIT CLASS */
 /* CREATE  2021.02.06      */
 /* REVISED 2021.05.17      */
-/* Ver 0.6.1               */
+/* Ver 0.6.2               */
 /* Original by K-ARAI      */
 
 #include <stdio.h>
@@ -907,25 +907,36 @@ int FloatedBigDigit32::Compare(FloatedBigDigit32* V) {
 /****************************************************************************/
 /****************************************************************************/
 
-int FloatedBigDigit32::toString(char* str,int n) {
-
-
-    int ptr = 0;
+int FloatedBigDigit32::toString(char* str,int n,bool rawdata) {
 
     if(n<this->N*(floatedBigDigit_K+1)+8) return floatedBigDigitERR;
 
+    int ptr = 0;
+    int shift = 0;
 
-    if (this->isMinus()) {
+    FloatedBigDigit32* AA = new FloatedBigDigit32();
+
+    AA->Copy(this);
+
+    // NORMALIZE
+    if(!rawdata) {
+        while(AA->Val[0]>=10) {
+            AA->div(10);
+            ++ shift;
+        }
+    }
+
+    if (AA->isMinus()) {
         str[ptr++] = '-';
     } else {
         str[ptr++] = '+';
     }
 
     for(int i=0;i<this->N;i++) {
-        int val = this->Val[i];
+        int val = AA->Val[i];
         int p = floatedBigDigit_unit;
         for(int j=0;j<floatedBigDigit_K;j++) {
-            if(this->isOver()) {
+            if(AA->isOver()) {
                 str[ptr++] = '*';
             } else if(val>=p) {
                 str[ptr++] = 'P';
@@ -956,10 +967,12 @@ int FloatedBigDigit32::toString(char* str,int n) {
         ord = (-ord);
     }
 
+    ord += shift;
+
     int p = 100000;
 
     for(int j=0;j<5;j++) {
-        if(this->isOver()) {
+        if(AA->isOver()) {
             str[ptr++] = '*';
         } else if(ord>=p) {
             str[ptr++] = '*';
@@ -972,6 +985,8 @@ int FloatedBigDigit32::toString(char* str,int n) {
     }
 
     str[ptr++] = '\0';
+
+    delete AA;
 
     return floatedBigDigitOK;
 

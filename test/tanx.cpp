@@ -33,7 +33,7 @@ int main(int argc,const char **argv) {
 
        VAL->SetTan(N);
 
-       VAL->toString(buff,10000);
+       VAL->toString(buff,10000,false);
 
        printf("%5.1f %s\n",(float)i/10,buff);
   

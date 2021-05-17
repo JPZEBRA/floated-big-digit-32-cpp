@@ -1,7 +1,7 @@
 /* FLOATED BIG DIGIT CLASS */
 /* CREATE  2021.02.06      */
 /* REVISED 2021.05.17      */
-/* Ver 0.6.1               */
+/* Ver 0.6.2               */
 /* Original by K-ARAI      */
 
 
@@ -135,7 +135,7 @@ class FloatedBigDigit32 {
 
     /****************************************************************************/
 
-        int toString(char* str,int n);
+        int toString(char* str,int n,bool rawdata = true);
         int footString(char* str,int n);
         int toString2(char* str,int n);
 
