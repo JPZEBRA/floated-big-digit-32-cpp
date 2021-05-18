@@ -1,7 +1,7 @@
 /* FLOATED BIG DIGIT CLASS */
 /* CREATE  2021.02.06      */
 /* REVISED 2021.05.17      */
-/* Ver 0.6.4               */
+/* Ver 0.6.5               */
 /* Original by K-ARAI      */
 
 #include <stdio.h>
@@ -3432,6 +3432,10 @@ int FloatedBigDigit32::SetAcosh(FloatedBigDigit32* V) {
         return floatedBigDigitERR;
     }
 
+    if(V->compare(1)==0) {
+        this->set(0);
+        return floatedBigDigitOK;
+    }
 
     FloatedBigDigit32* F = new FloatedBigDigit32();
 
