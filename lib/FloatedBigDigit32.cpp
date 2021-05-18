@@ -1,7 +1,7 @@
 /* FLOATED BIG DIGIT CLASS */
 /* CREATE  2021.02.06      */
 /* REVISED 2021.05.17      */
-/* Ver 0.6.6               */
+/* Ver 0.6.7               */
 /* Original by K-ARAI      */
 
 #include <stdio.h>
@@ -226,7 +226,13 @@ bool FloatedBigDigit32::lastBit() {
 
         int last_bit_boost = 3;
 
+        if(this->isEmpty()) return true;
+
         if(!this->isSmall()) return false;
+
+        bool rf = this->minus;
+        this->minus = false;
+
 
         FloatedBigDigit32* CC = new FloatedBigDigit32();
 
@@ -235,6 +241,8 @@ bool FloatedBigDigit32::lastBit() {
         CC->shiftPoint = - ( CC->N + floatedBigDigit_F*last_bit_boost );
 
         bool ret = !(this->Compare(CC)>=0);
+
+        this->minus = rf;
 
         delete CC;
 
@@ -2709,7 +2717,7 @@ int FloatedBigDigit32::SetSin(FloatedBigDigit32* V) {
 
     }
 
-    if(F->isZero()) {
+    if(F->isEmpty()) {
 
         delete P;
         delete P2;
@@ -2816,6 +2824,7 @@ int FloatedBigDigit32::SetCos(FloatedBigDigit32* V) {
     }
 
     if(F->isEmpty()) {
+
         this->set(1);
 
         delete P;
@@ -2892,7 +2901,7 @@ int FloatedBigDigit32::SetTan(FloatedBigDigit32* V) {
 
 int FloatedBigDigit32::SetSinh(FloatedBigDigit32* V) {
 
-    if(V->isZero()) {
+    if(V->isEmpty()) {
         this->set(0);
         return floatedBigDigitOK;
     }
@@ -2953,7 +2962,7 @@ int FloatedBigDigit32::SetSinh(FloatedBigDigit32* V) {
 int FloatedBigDigit32::SetCosh(FloatedBigDigit32* V) {
 
 
-    if(V->isZero()) {
+    if(V->isEmpty()) {
         this->set(1);
         return floatedBigDigitOK;
     }
