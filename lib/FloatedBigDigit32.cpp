@@ -1,7 +1,7 @@
 /* FLOATED BIG DIGIT CLASS */
 /* CREATE  2021.02.06      */
-/* REVISED 2021.05.17      */
-/* Ver 0.7.1               */
+/* REVISED 2021.05.18      */
+/* Ver 0.7.2               */
 /* Original by K-ARAI      */
 
 #include <stdio.h>
@@ -1855,6 +1855,8 @@ int FloatedBigDigit32::SetFactorial(FloatedBigDigit32* V) {
     delete R;
     delete C;
 
+    if(this->checkOver()) return floatedBigDigitERR;
+
     return floatedBigDigitOK;
 
 }
@@ -1908,6 +1910,8 @@ int FloatedBigDigit32::SetDoubleFactorial(FloatedBigDigit32* V) {
 
     delete R;
     delete C;
+
+    if(this->checkOver()) return floatedBigDigitERR;
 
     return floatedBigDigitOK;
 
@@ -1989,6 +1993,8 @@ int FloatedBigDigit32::SetSequence(FloatedBigDigit32* N,FloatedBigDigit32* K) {
     delete R;
     delete C;
     delete A;
+
+    if(this->checkOver()) return floatedBigDigitERR;
 
     return floatedBigDigitOK;
 
@@ -2073,6 +2079,8 @@ int FloatedBigDigit32::SetCombination(FloatedBigDigit32* N,FloatedBigDigit32* K)
     delete R;
     delete B;
     delete C;
+
+    if(this->checkOver()) return floatedBigDigitERR;
 
     return floatedBigDigitOK;
 
@@ -2273,7 +2281,7 @@ int FloatedBigDigit32::setAtanDiv(int d) {
 
     return floatedBigDigitOK;
 
-    }
+}
 
 /****************************************************************************/
 /****************************************************************************/
@@ -2384,6 +2392,8 @@ int FloatedBigDigit32::SetExp(FloatedBigDigit32* V) {
     delete C;
 
     if(stop) return floatedBigDigitERR;
+
+    if(this->checkOver()) return floatedBigDigitERR;
 
     return floatedBigDigitOK;
 
@@ -2768,6 +2778,9 @@ int FloatedBigDigit32::Power_main(FloatedBigDigit32* V,bool boost) {
 
     delete B;
     delete C;
+
+
+    if(this->checkOver()) return floatedBigDigitERR;
 
     return floatedBigDigitOK;
 
