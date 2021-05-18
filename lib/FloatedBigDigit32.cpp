@@ -1,7 +1,7 @@
 /* FLOATED BIG DIGIT CLASS */
 /* CREATE  2021.02.06      */
 /* REVISED 2021.05.17      */
-/* Ver 0.6.5               */
+/* Ver 0.6.6               */
 /* Original by K-ARAI      */
 
 #include <stdio.h>
@@ -2892,6 +2892,11 @@ int FloatedBigDigit32::SetTan(FloatedBigDigit32* V) {
 
 int FloatedBigDigit32::SetSinh(FloatedBigDigit32* V) {
 
+    if(V->isZero()) {
+        this->set(0);
+        return floatedBigDigitOK;
+    }
+
     FloatedBigDigit32* F = new FloatedBigDigit32();
     FloatedBigDigit32* C = new FloatedBigDigit32();
 
@@ -2946,6 +2951,12 @@ int FloatedBigDigit32::SetSinh(FloatedBigDigit32* V) {
 /****************************************************************************/
 
 int FloatedBigDigit32::SetCosh(FloatedBigDigit32* V) {
+
+
+    if(V->isZero()) {
+        this->set(1);
+        return floatedBigDigitOK;
+    }
 
     FloatedBigDigit32* C = new FloatedBigDigit32();
 
