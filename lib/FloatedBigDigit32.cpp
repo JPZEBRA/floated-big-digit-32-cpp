@@ -1,7 +1,7 @@
 /* FLOATED BIG DIGIT CLASS */
 /* CREATE  2021.02.06      */
 /* REVISED 2021.05.17      */
-/* Ver 0.6.8               */
+/* Ver 0.6.9               */
 /* Original by K-ARAI      */
 
 #include <stdio.h>
@@ -14,7 +14,8 @@
 /****************************************************************************/
 
 int floatedBigDigit_K     = 5;
-int floatedBigDigit_unit = 100000;
+int floatedBigDigit_unit  = 100000;
+int floatedBigDigit_order = 10000;
 
 int floatedBigDigit_F     = 2;
 int floatedBigDigit_LMT = 12000;
@@ -345,7 +346,11 @@ int FloatedBigDigit32::value(int idx) {
 
 bool FloatedBigDigit32::checkOver() {
 
-    if(this->Val[0]>=floatedBigDigit_unit) this->overflow();
+    if( this->shiftPoint >  floatedBigDigit_order / floatedBigDigit_K ) this->overflow();
+  
+    if( this->shiftPoint < -floatedBigDigit_order / floatedBigDigit_K ) this->overflow();
+
+    if( this->Val[0] >= floatedBigDigit_unit ) this->overflow();
 
     return this->isOver();
 
@@ -981,6 +986,8 @@ int FloatedBigDigit32::toString(char* str,int n,bool rawdata) {
 
     int ord = this->order();
 
+    ord += shift;
+
     if(ord>=0) {
         str[ptr++] = '+';
     } else {
@@ -988,15 +995,15 @@ int FloatedBigDigit32::toString(char* str,int n,bool rawdata) {
         ord = (-ord);
     }
 
-    ord += shift;
-
     int p = 100000;
 
     for(int j=0;j<5;j++) {
         if(AA->isOver()) {
             str[ptr++] = '*';
         } else if(ord>=p) {
-            str[ptr++] = '*';
+            str[ptr++] = 'P';
+        } else if(ord<0) {
+            str[ptr++] = 'M';
         } else {
             p /= 10;
             int v = ord / p;
@@ -2903,6 +2910,8 @@ int FloatedBigDigit32::SetTan(FloatedBigDigit32* V) {
 
     delete C;
 
+    if(this->checkOver()) return floatedBigDigitERR;
+
     return floatedBigDigitOK;
 
 }
@@ -2961,7 +2970,7 @@ int FloatedBigDigit32::SetSinh(FloatedBigDigit32* V) {
     delete F;
     delete C;
 
-    if(this->isOver()) return floatedBigDigitERR;
+    if(this->checkOver()) return floatedBigDigitERR;
 
     if(stop) return floatedBigDigitERR;
 
@@ -3012,7 +3021,7 @@ int FloatedBigDigit32::SetCosh(FloatedBigDigit32* V) {
 
     delete C;
 
-    if(this->isOver()) return floatedBigDigitERR;
+    if(this->checkOver()) return floatedBigDigitERR;
 
     if(stop) return floatedBigDigitERR;
 
