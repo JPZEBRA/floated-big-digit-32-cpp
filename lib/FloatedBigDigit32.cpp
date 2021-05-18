@@ -1,7 +1,7 @@
 /* FLOATED BIG DIGIT CLASS */
 /* CREATE  2021.02.06      */
 /* REVISED 2021.05.17      */
-/* Ver 0.6.9               */
+/* Ver 0.7.1               */
 /* Original by K-ARAI      */
 
 #include <stdio.h>
@@ -213,6 +213,7 @@ int FloatedBigDigit32::Set(const char* str) {
             if(rdc>='0' && rdc<='9') {
                 odn *= 10;
                 odn += ( rdc-'0');
+                if( odn >= floatedBigDigit_order ) readError = true;
             } else {
                 readError = true;
             }
@@ -229,6 +230,8 @@ int FloatedBigDigit32::Set(const char* str) {
         this->overflow();
         return floatedBigDigitERR;
     }
+
+    if(this->checkOver()) return floatedBigDigitERR;
 
     return floatedBigDigitOK;
 
@@ -346,9 +349,9 @@ int FloatedBigDigit32::value(int idx) {
 
 bool FloatedBigDigit32::checkOver() {
 
-    if( this->shiftPoint >  floatedBigDigit_order / floatedBigDigit_K ) this->overflow();
+    if( this->shiftPoint >=  floatedBigDigit_order / floatedBigDigit_K ) this->overflow();
   
-    if( this->shiftPoint < -floatedBigDigit_order / floatedBigDigit_K ) this->overflow();
+    if( this->shiftPoint <= -floatedBigDigit_order / floatedBigDigit_K ) this->overflow();
 
     if( this->Val[0] >= floatedBigDigit_unit ) this->overflow();
 
@@ -373,6 +376,11 @@ bool FloatedBigDigit32::overflow() {
 
 bool FloatedBigDigit32::isMinus() {
 
+    if(this->isOver()) {
+        return false;
+    }
+
+
     return this->minus;
 
 }
@@ -380,6 +388,10 @@ bool FloatedBigDigit32::isMinus() {
 /****************************************************************************/
 
 bool FloatedBigDigit32::isSmall() {
+
+    if(this->isOver()) {
+        return false;
+    }
 
     this->shiftMax();
 
@@ -399,6 +411,10 @@ bool FloatedBigDigit32::isSmall() {
 
 bool FloatedBigDigit32::isSeed() {
 
+    if(this->isOver()) {
+        return false;
+    }
+
     if(this->shiftPoint!=0) return false;
 
     return !this->isSmall();
@@ -408,6 +424,10 @@ bool FloatedBigDigit32::isSeed() {
 /****************************************************************************/
 
 bool FloatedBigDigit32::isBig() {
+
+    if(this->isOver()) {
+        return false;
+    }
 
     if(this->shiftPoint<=0) return false;
 
@@ -429,6 +449,10 @@ bool FloatedBigDigit32::isOver() {
 
 bool FloatedBigDigit32::isZero() {
 
+    if(this->isOver()) {
+        return false;
+    }
+
     for(int i=0;i<=this->N;i++) if(this->Val[i]!=0) return false;
 
     return true;
@@ -439,6 +463,10 @@ bool FloatedBigDigit32::isZero() {
 
 bool FloatedBigDigit32::isEmpty() {
 
+    if(this->isOver()) {
+        return false;
+    }
+
     for(int i=0;i<=this->N+floatedBigDigit_F;i++) if(this->Val[i]!=0) return false;
 
     return true;
@@ -448,6 +476,10 @@ bool FloatedBigDigit32::isEmpty() {
 /****************************************************************************/
 
 int FloatedBigDigit32::FD() {
+
+    if(this->isOver()) {
+        return floatedBigDigitERR;
+    }
 
     if(!this->isSmall()) return floatedBigDigitOK;
 
@@ -460,6 +492,10 @@ int FloatedBigDigit32::FD() {
 /****************************************************************************/
 
 int FloatedBigDigit32::FR() {
+
+    if(this->isOver()) {
+        return floatedBigDigitERR;
+    }
 
     if(!this->isSmall()) return floatedBigDigitOK;
 
@@ -496,6 +532,10 @@ int FloatedBigDigit32::FR() {
 
 int FloatedBigDigit32::Fix() {
 
+    if(this->isOver()) {
+        return floatedBigDigitERR;
+    }
+
     if(this->shiftPoint<0) {
         this->clear();
         return floatedBigDigitOK;
@@ -512,6 +552,10 @@ int FloatedBigDigit32::Fix() {
 /****************************************************************************/
 
 int FloatedBigDigit32::Round() {
+
+    if(this->isOver()) {
+        return floatedBigDigitERR;
+    }
 
     if(this->shiftPoint<-1) {
         this->clear();
@@ -542,6 +586,10 @@ int FloatedBigDigit32::Round() {
 
 int FloatedBigDigit32::Int() {
 
+    if(this->isOver()) {
+        return floatedBigDigitERR;
+    }
+
     if(this->shiftPoint<-1) {
         this->clear();
         return floatedBigDigitOK;
@@ -563,6 +611,10 @@ int FloatedBigDigit32::Int() {
 
 int FloatedBigDigit32::Abs() {
 
+    if(this->isOver()) {
+        return floatedBigDigitERR;
+    }
+
     this->minus = false;
 
     return floatedBigDigitOK;
@@ -572,6 +624,10 @@ int FloatedBigDigit32::Abs() {
 /****************************************************************************/
 
 int FloatedBigDigit32::Sig() {
+
+    if(this->isOver()) {
+        return floatedBigDigitERR;
+    }
 
     this->minus = !this->minus;
 
@@ -583,6 +639,10 @@ int FloatedBigDigit32::Sig() {
 
 int FloatedBigDigit32::shift(int val) {
 
+    if(this->isOver()) {
+        return floatedBigDigitERR;
+    }
+
     return this->shiftSmall(val);
 
 }
@@ -590,6 +650,10 @@ int FloatedBigDigit32::shift(int val) {
 /****************************************************************************/
 
 int FloatedBigDigit32::shiftSmall(int val) {
+
+    if(this->isOver()) {
+        return floatedBigDigitERR;
+    }
 
     if(val==0) return floatedBigDigitOK;
     if(this->isEmpty()) return floatedBigDigitOK;
@@ -639,6 +703,10 @@ int FloatedBigDigit32::shiftSmall(int val) {
 
 int FloatedBigDigit32::shiftMax() {
 
+    if(this->isOver()) {
+        return floatedBigDigitERR;
+    }
+
     if(this->isEmpty()) {
         this->clear();
         return 0;
@@ -670,6 +738,10 @@ int FloatedBigDigit32::mul(int val) {
 /****************************************************************************/
 
 int FloatedBigDigit32::mulSmall(int val) {
+
+    if(this->isOver()) {
+        return floatedBigDigitERR;
+    }
 
     if(val==0) {
         this->clear();
@@ -728,6 +800,8 @@ int FloatedBigDigit32::mulSmall(int val) {
 
     this->minus = rf;
 
+    if(this->checkOver()) return floatedBigDigitERR;
+
     this->isSmall();
 
     return floatedBigDigitOK;
@@ -746,6 +820,10 @@ int FloatedBigDigit32::div(int val) {
 /****************************************************************************/
 
 int FloatedBigDigit32::divSmall(int val) {
+
+    if(this->isOver()) {
+        return floatedBigDigitERR;
+    }
 
     if(val==0) {
         this->overflow();
@@ -775,7 +853,7 @@ int FloatedBigDigit32::divSmall(int val) {
 
     CR = (CR*2/val>=1) ? 1: 0;
 
-    this->shiftMax();
+    if(this->checkOver()) return floatedBigDigitERR;
 
     this->isSmall();
 
@@ -795,6 +873,10 @@ int FloatedBigDigit32::add(int val) {
 /****************************************************************************/
 
 int FloatedBigDigit32::addSmall(int val) {
+
+    if(this->isOver()) {
+        return floatedBigDigitERR;
+    }
 
     if(val==0) {
         return floatedBigDigitOK;
@@ -824,6 +906,10 @@ int FloatedBigDigit32::addSmall(int val) {
 
     delete BB;
 
+    if(this->checkOver()) return floatedBigDigitERR;
+
+    this->isSmall();
+
     return ret;
 
 }   
@@ -841,6 +927,10 @@ int FloatedBigDigit32::sub(int val) {
 /****************************************************************************/
 
 int FloatedBigDigit32::subSmall(int val) {
+
+    if(this->isOver()) {
+        return floatedBigDigitERR;
+    }
 
     if(val==0) {
         return floatedBigDigitOK;
@@ -870,6 +960,10 @@ int FloatedBigDigit32::subSmall(int val) {
 
     delete BB;
 
+    if(this->checkOver()) return floatedBigDigitERR;
+
+    this->isSmall();
+
     return ret;
 
 }
@@ -895,45 +989,59 @@ int FloatedBigDigit32::compare(int val) {
 
 int FloatedBigDigit32::Compare(FloatedBigDigit32* V) {
 
-        int GT = +1;
-        int LT = -1;
-        int EQ =  0;
-        int RV =  1;
+    if(this->isOver()) {
+        return 0;
+    }
 
-        if( this->isMinus() && !V->isMinus()) return LT;
-        if(!this->isMinus() &&  V->isMinus()) return GT;
-        if( this->isMinus() &&  V->isMinus()) RV = -1;
+    if(V->isOver()) {
+        return 0;
+    }
 
-        int sf = V->shiftPoint - this->shiftPoint;
+    int GT = +1;
+    int LT = -1;
+    int EQ =  0;
+    int RV =  1;
 
-        if( sf >= 0 ) {
+    if( this->isMinus() && !V->isMinus()) return LT;
+    if(!this->isMinus() &&  V->isMinus()) return GT;
+    if( this->isMinus() &&  V->isMinus()) RV = -1;
 
-            for(int i = 0;i<=this->N+floatedBigDigit_F;i++) {
+    int sf = V->shiftPoint - this->shiftPoint;
 
-                if(this->digit(i-sf)>V->digit(i)) return GT*RV;
-                if(this->digit(i-sf)<V->digit(i)) return LT*RV;
+    if( sf >= 0 ) {
 
-            }
+        for(int i = 0;i<=this->N+floatedBigDigit_F;i++) {
 
-        } else {
-
-            for(int i = 0;i<=this->N+floatedBigDigit_F;i++) {
-
-                if(this->digit(i)>V->digit(i+sf)) return GT*RV;
-                if(this->digit(i)<V->digit(i+sf)) return LT*RV;
-
-            }
+            if(this->digit(i-sf)>V->digit(i)) return GT*RV;
+            if(this->digit(i-sf)<V->digit(i)) return LT*RV;
 
         }
 
-        return EQ;
+    } else {
+
+        for(int i = 0;i<=this->N+floatedBigDigit_F;i++) {
+
+            if(this->digit(i)>V->digit(i+sf)) return GT*RV;
+            if(this->digit(i)<V->digit(i+sf)) return LT*RV;
+
+         }
 
     }
+
+    return EQ;
+
+}
 
 /****************************************************************************/
 /****************************************************************************/
 
 int FloatedBigDigit32::toString(char* str,int n,bool rawdata) {
+
+    if(n>0) str[0] = '\0';
+
+    if(this->isOver()) {
+        return floatedBigDigitERR;
+    }
 
     if(n<(this->N+1)*(floatedBigDigit_K+1)+8) return floatedBigDigitERR;
 
@@ -1024,10 +1132,15 @@ int FloatedBigDigit32::toString(char* str,int n,bool rawdata) {
 
 int FloatedBigDigit32::footString(char* str,int n) {
 
+    if(n>0) str[0] = '\0';
+
+    if(this->isOver()) {
+        return floatedBigDigitERR;
+    }
 
     int ptr = 0;
 
-    if(n<(floatedBigDigit_K+1)*floatedBigDigit_F+1) return -1;
+    if(n<(floatedBigDigit_K+1)*floatedBigDigit_F+1) return floatedBigDigitERR;
 
     for(int i=this->N+1;i<=this->N+floatedBigDigit_F;i++) {
         int val = this->Val[i];
@@ -1050,6 +1163,12 @@ int FloatedBigDigit32::footString(char* str,int n) {
 /****************************************************************************/
 
 int FloatedBigDigit32::toString2(char* str,int keta,int small) {
+
+    if(keta>0) str[0] = '\0';
+
+    if(this->isOver()) {
+        return floatedBigDigitERR;
+    }
 
     int ptr;
 
@@ -1206,9 +1325,11 @@ int FloatedBigDigit32::AddSmall(FloatedBigDigit32* V) {
         this->Add(AA);
     }
 
-    this->shiftMax();
+    this->isSmall();
 
     delete AA;
+
+    if(this->checkOver()) return floatedBigDigitERR;
 
     return floatedBigDigitOK;
 
@@ -1315,9 +1436,11 @@ int FloatedBigDigit32::SubSmall(FloatedBigDigit32* V) {
         this->Add(AA);
     }
 
-    this->shiftMax();
+    this->isSmall();
 
     delete AA;
+
+    if(this->checkOver()) return floatedBigDigitERR;
 
     return floatedBigDigitOK;
 
@@ -1390,11 +1513,13 @@ int FloatedBigDigit32::MulSmall(FloatedBigDigit32* V) {
 
     this->Copy(RR);
 
-    this->shiftMax();
-
     delete BB;
     delete RR;
     delete CC;
+
+    if(this->checkOver()) return floatedBigDigitERR;
+
+    this->isSmall();
 
     return floatedBigDigitOK;
 
@@ -1542,6 +1667,10 @@ int FloatedBigDigit32::DivSmall(FloatedBigDigit32* V) {
     delete CC;
     delete BB;
 
+    if(this->checkOver()) return floatedBigDigitERR;
+
+    this->isSmall();
+
     return floatedBigDigitOK;
 
 }
@@ -1572,6 +1701,11 @@ int FloatedBigDigit32::mod(int val) {
 
 int FloatedBigDigit32::Mod(FloatedBigDigit32* V) {
 
+    if(V->isOver()) {
+        this->overflow();
+        return floatedBigDigitERR;
+    }
+
     if(V->isZero()) {
         this->overflow();
         return floatedBigDigitERR;
@@ -1590,6 +1724,8 @@ int FloatedBigDigit32::Mod(FloatedBigDigit32* V) {
     this->Sub(BB);
 
     delete BB;
+
+    this->isSmall();
 
     return floatedBigDigitOK;
 
@@ -1691,6 +1827,11 @@ int FloatedBigDigit32::setFactorial(int n) {
 
 int FloatedBigDigit32::SetFactorial(FloatedBigDigit32* V) {
 
+    if(V->isOver()) {
+        this->overflow();
+        return floatedBigDigitERR;
+    }
+
     if(V->isMinus()) return floatedBigDigitERR;
     if(V->isSmall()) return floatedBigDigitERR;
 
@@ -1739,6 +1880,10 @@ int FloatedBigDigit32::setDoubleFactorial(int n) {
 
 int FloatedBigDigit32::SetDoubleFactorial(FloatedBigDigit32* V) {
 
+    if(V->isOver()) {
+        this->overflow();
+        return floatedBigDigitERR;
+    }
 
     if(V->isMinus()) return floatedBigDigitERR;
     if(V->isSmall()) return floatedBigDigitERR;
@@ -1793,6 +1938,16 @@ int FloatedBigDigit32::setSequence(int n,int k) {
 /****************************************************************************/
 
 int FloatedBigDigit32::SetSequence(FloatedBigDigit32* N,FloatedBigDigit32* K) {
+
+    if(N->isOver()) {
+        this->overflow();
+        return floatedBigDigitERR;
+    }
+
+    if(K->isOver()) {
+        this->overflow();
+        return floatedBigDigitERR;
+    }
 
     if(N->isMinus()) return floatedBigDigitERR;
     if(N->isSmall()) return floatedBigDigitERR;
@@ -1865,6 +2020,15 @@ int FloatedBigDigit32::setCombination(int n,int k) {
 
 int FloatedBigDigit32::SetCombination(FloatedBigDigit32* N,FloatedBigDigit32* K) {
 
+    if(N->isOver()) {
+        this->overflow();
+        return floatedBigDigitERR;
+    }
+
+    if(K->isOver()) {
+        this->overflow();
+        return floatedBigDigitERR;
+    }
 
     if(N->isMinus()) return floatedBigDigitERR;
     if(N->isSmall()) return floatedBigDigitERR;
@@ -2116,6 +2280,11 @@ int FloatedBigDigit32::setAtanDiv(int d) {
 
 int FloatedBigDigit32::SetExp(FloatedBigDigit32* V) {
 
+    if(V->isOver()) {
+        this->overflow();
+        return floatedBigDigitERR;
+    }
+
     FloatedBigDigit32* R = new FloatedBigDigit32();
     FloatedBigDigit32* C = new FloatedBigDigit32();
 
@@ -2224,6 +2393,10 @@ int FloatedBigDigit32::SetExp(FloatedBigDigit32* V) {
 
 int FloatedBigDigit32::SetLn(FloatedBigDigit32* V) {
 
+    if(V->isOver()) {
+        this->overflow();
+        return floatedBigDigitERR;
+    }
 
     if(V->compare(0) <= 0) {
         this->overflow();
@@ -2331,6 +2504,10 @@ int FloatedBigDigit32::SetLn(FloatedBigDigit32* V) {
 
 int FloatedBigDigit32::SetLog(FloatedBigDigit32* V) {
 
+    if(V->isOver()) {
+        this->overflow();
+        return floatedBigDigitERR;
+    }
 
     if(V->compare(0) <= 0) {
         this->overflow();
@@ -2363,6 +2540,10 @@ int FloatedBigDigit32::SetLog(FloatedBigDigit32* V) {
 
 int FloatedBigDigit32::SetLog2(FloatedBigDigit32* V) {
 
+    if(V->isOver()) {
+        this->overflow();
+        return floatedBigDigitERR;
+    }
 
     if(V->compare(0) <= 0) {
         this->overflow();
@@ -2416,6 +2597,16 @@ int FloatedBigDigit32::power(int n) {
 /****************************************************************************/
 
 int FloatedBigDigit32::Power(FloatedBigDigit32* V) {
+
+    if(this->isOver()) {
+        this->overflow();
+        return floatedBigDigitERR;
+    }
+
+    if(V->isOver()) {
+        this->overflow();
+        return floatedBigDigitERR;
+    }
 
     return this->Power_main(V,true);
 
@@ -2586,6 +2777,15 @@ int FloatedBigDigit32::Power_main(FloatedBigDigit32* V,bool boost) {
 
 int FloatedBigDigit32::PowerDiv(FloatedBigDigit32* V) {
 
+    if(this->isOver()) {
+        this->overflow();
+        return floatedBigDigitERR;
+    }
+
+    if(V->isOver()) {
+        this->overflow();
+        return floatedBigDigitERR;
+    }
 
     if(this->isZero()) {
         this->clear();
@@ -2687,6 +2887,11 @@ int FloatedBigDigit32::PowerDiv_boost(FloatedBigDigit32* V) {
 /****************************************************************************/
 
 int FloatedBigDigit32::SetSin(FloatedBigDigit32* V) {
+
+    if(V->isOver()) {
+        this->overflow();
+        return floatedBigDigitERR;
+    }
 
     FloatedBigDigit32* P = new FloatedBigDigit32();
     P->SetPI();
@@ -2794,6 +2999,10 @@ int FloatedBigDigit32::SetSin(FloatedBigDigit32* V) {
 
 int FloatedBigDigit32::SetCos(FloatedBigDigit32* V) {
 
+    if(V->isOver()) {
+        this->overflow();
+        return floatedBigDigitERR;
+    }
 
     FloatedBigDigit32* P = new FloatedBigDigit32();
     P->SetPI();
@@ -2900,6 +3109,11 @@ int FloatedBigDigit32::SetCos(FloatedBigDigit32* V) {
 
 int FloatedBigDigit32::SetTan(FloatedBigDigit32* V) {
 
+    if(V->isOver()) {
+        this->overflow();
+        return floatedBigDigitERR;
+    }
+
     FloatedBigDigit32* C = new FloatedBigDigit32();
 
     this->SetSin(V);
@@ -2921,6 +3135,11 @@ int FloatedBigDigit32::SetTan(FloatedBigDigit32* V) {
 /****************************************************************************/
 
 int FloatedBigDigit32::SetSinh(FloatedBigDigit32* V) {
+
+    if(V->isOver()) {
+        this->overflow();
+        return floatedBigDigitERR;
+    }
 
     if(V->isEmpty()) {
         this->set(0);
@@ -2982,6 +3201,10 @@ int FloatedBigDigit32::SetSinh(FloatedBigDigit32* V) {
 
 int FloatedBigDigit32::SetCosh(FloatedBigDigit32* V) {
 
+    if(V->isOver()) {
+        this->overflow();
+        return floatedBigDigitERR;
+    }
 
     if(V->isEmpty()) {
         this->set(1);
@@ -3033,6 +3256,11 @@ int FloatedBigDigit32::SetCosh(FloatedBigDigit32* V) {
 
 int FloatedBigDigit32::SetTanh(FloatedBigDigit32* V) {
 
+    if(V->isOver()) {
+        this->overflow();
+        return floatedBigDigitERR;
+    }
+
     FloatedBigDigit32* C = new FloatedBigDigit32();
 
     int ret = this->SetSinh(V);
@@ -3051,6 +3279,16 @@ int FloatedBigDigit32::SetTanh(FloatedBigDigit32* V) {
 /****************************************************************************/
 
 int FloatedBigDigit32::SetAtan2(FloatedBigDigit32* Y, FloatedBigDigit32* X) {
+
+    if(Y->isOver()) {
+        this->overflow();
+        return floatedBigDigitERR;
+    }
+
+    if(X->isOver()) {
+        this->overflow();
+        return floatedBigDigitERR;
+    }
 
     if(Y->isEmpty()) {
         if(X->compare(0)>=0) {
@@ -3109,6 +3347,11 @@ int FloatedBigDigit32::SetAtan2(FloatedBigDigit32* Y, FloatedBigDigit32* X) {
 /****************************************************************************/
 
 int FloatedBigDigit32::SetAtan(FloatedBigDigit32* V) {
+
+    if(V->isOver()) {
+        this->overflow();
+        return floatedBigDigitERR;
+    }
 
     if(V->compare(0)==0) {
         this->set(0);
@@ -3204,6 +3447,11 @@ int FloatedBigDigit32::SetAtan(FloatedBigDigit32* V) {
 
 int FloatedBigDigit32::SetAsin(FloatedBigDigit32* V) {
 
+    if(V->isOver()) {
+        this->overflow();
+        return floatedBigDigitERR;
+    }
+
     FloatedBigDigit32* F = new FloatedBigDigit32();
 
     F->Copy(V);
@@ -3277,6 +3525,11 @@ int FloatedBigDigit32::SetAsin(FloatedBigDigit32* V) {
 
 int FloatedBigDigit32::SetAcos(FloatedBigDigit32* V) {
 
+    if(V->isOver()) {
+        this->overflow();
+        return floatedBigDigitERR;
+    }
+
     FloatedBigDigit32* F = new FloatedBigDigit32();
 
     F->Copy(V);
@@ -3325,6 +3578,11 @@ int FloatedBigDigit32::SetAcos(FloatedBigDigit32* V) {
 /****************************************************************************/
 
 int FloatedBigDigit32::SetAsinh(FloatedBigDigit32* V) {
+
+    if(V->isOver()) {
+        this->overflow();
+        return floatedBigDigitERR;
+    }
 
     this->Copy(V);
     this->minus = false;
@@ -3384,6 +3642,10 @@ int FloatedBigDigit32::SetAsinh(FloatedBigDigit32* V) {
 
 int FloatedBigDigit32::SetAsinhB(FloatedBigDigit32* V) {
 
+    if(V->isOver()) {
+        this->overflow();
+        return floatedBigDigitERR;
+    }
 
     FloatedBigDigit32* F = new FloatedBigDigit32();
 
@@ -3467,6 +3729,11 @@ int FloatedBigDigit32::SetAsinhB(FloatedBigDigit32* V) {
 
 
 int FloatedBigDigit32::SetAcosh(FloatedBigDigit32* V) {
+
+    if(V->isOver()) {
+        this->overflow();
+        return floatedBigDigitERR;
+    }
 
     if(V->isMinus()) {
         this->overflow();
@@ -3556,6 +3823,11 @@ int FloatedBigDigit32::SetAcosh(FloatedBigDigit32* V) {
 /****************************************************************************/
 
 int FloatedBigDigit32::SetAtanh(FloatedBigDigit32* V) {
+
+    if(V->isOver()) {
+        this->overflow();
+        return floatedBigDigitERR;
+    }
 
     bool rf = V->minus;
     V->minus = false;
