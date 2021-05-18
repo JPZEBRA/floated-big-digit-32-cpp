@@ -3,6 +3,8 @@
 #include <string.h>
 #include <time.h>
 
+#include "FloatedBigDigit32.h"
+
 int main(int argc,const char **argv) {
 
     char buff[200];
@@ -20,7 +22,7 @@ int main(int argc,const char **argv) {
 
     SetFloatedBigDigit32Keta((int)KETA);
 
-    SetRandomSeed(time(NULL));
+    Fbd32SetRandomSeed(time(NULL));
 
 
     FloatedBigDigit32* DICE = new FloatedBigDigit32();

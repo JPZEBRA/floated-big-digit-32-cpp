@@ -1,7 +1,7 @@
 /* FLOATED BIG DIGIT CLASS */
 /* CREATE  2021.02.06      */
 /* REVISED 2021.05.17      */
-/* Ver 0.6.7               */
+/* Ver 0.6.8               */
 /* Original by K-ARAI      */
 
 #include <stdio.h>
@@ -19,6 +19,9 @@ int floatedBigDigit_unit = 100000;
 int floatedBigDigit_F     = 2;
 int floatedBigDigit_LMT = 12000;
 int floatedBigDigit_LM2 = 30000;
+int floatedBigDigit_LMX = 99990;
+int floatedBigDigit_LST = 5;
+int floatedBigDigit_LSX = 50;
 
 /****************************************************************************/
 
@@ -37,9 +40,19 @@ int floatedBigDigitCashedPI_R;
 /****************************************************************************/
 /****************************************************************************/
 
-int SetRandomSeed(int seed) {
+int Fbd32SetRandomSeed(int seed) {
 
     srand(seed);
+
+    return floatedBigDigitOK;
+}
+
+/****************************************************************************/
+
+int Fbd32LimitBreak() {
+
+    floatedBigDigit_LM2 = floatedBigDigit_LMX;
+    floatedBigDigit_LST = floatedBigDigit_LSX;
 
     return floatedBigDigitOK;
 }
@@ -224,7 +237,7 @@ int FloatedBigDigit32::Set(const char* str) {
 
 bool FloatedBigDigit32::lastBit() {
 
-        int last_bit_boost = 3;
+        int last_bit_boost = floatedBigDigit_LST;
 
         if(this->isEmpty()) return true;
 
@@ -2004,8 +2017,7 @@ int FloatedBigDigit32::setAtan2(int y,int x) {
     C->set(y);
     C->div(x);
 
-      int ret = -1;
-//    int ret = this->SetAtan(C);
+    int ret = this->SetAtan(C);
 
     delete C;
 
@@ -3138,9 +3150,9 @@ int FloatedBigDigit32::SetAtan(FloatedBigDigit32* V) {
         C->Mul(V);        
         C->Mul(V);
         P->add(1);
-    } while(P->compare(floatedBigDigit_LMT) < 0 && !C->lastBit());
+    } while(P->compare(floatedBigDigit_LM2) < 0 && !C->lastBit());
 
-    bool stop = ( P->compare(floatedBigDigit_LMT)>=0 );
+    bool stop = ( P->compare(floatedBigDigit_LM2)>=0 );
 
     this->set(1);
     while(P->compare(1)>=0) {

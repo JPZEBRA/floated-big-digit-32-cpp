@@ -1,7 +1,6 @@
 /* FLOATED BIG DIGIT CLASS */
 /* CREATE  2021.02.06      */
 /* REVISED 2021.05.17      */
-/* Ver 0.6.7               */
 /* Original by K-ARAI      */
 
 
@@ -14,7 +13,9 @@
 /****************************************************************************/
 
 
-int SetRandomSeed(int seed);
+int Fbd32SetRandomSeed(int seed);
+
+int Fbd32LimitBreak();
 
 int SetFloatedBigDigit32Keta(int k);
 
