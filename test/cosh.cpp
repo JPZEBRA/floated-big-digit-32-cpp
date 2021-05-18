@@ -28,11 +28,11 @@ int main(int argc,const char **argv) {
        N->set(i);
        N->div(10);
 
-       VAL->SetCosh(N);
+       int ret = VAL->SetCosh(N);
 
        VAL->toString(buff,10000);
 
-       printf("+%5.1f %s\n",(float)i/10,buff);
+       printf("+%5.1f %s R:%d\n",(float)i/10,buff,ret);
   
     }
 
@@ -42,11 +42,11 @@ int main(int argc,const char **argv) {
        N->div(10);
        N->Sig();
 
-       VAL->SetCosh(N);
+       int ret = VAL->SetCosh(N);
 
        VAL->toString(buff,10000);
 
-       printf("-%5.1f %s\n",(float)i/10,buff);
+       printf("-%5.1f %s R:%d\n",(float)i/10,buff,ret);
   
     }
 
