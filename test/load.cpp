@@ -36,6 +36,10 @@ int main(int argc,const char **argv) {
     VAL->toString2(buff,50,30);
 
     printf("%s\n",buff);
+
+    double val = VAL->toDouble();
+
+    printf("%f\n",val);
   
     delete VAL;
 

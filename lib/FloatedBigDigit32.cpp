@@ -1,13 +1,14 @@
 /* FLOATED BIG DIGIT CLASS */
 /* CREATE  2021.02.06      */
 /* REVISED 2021.05.18      */
-/* Ver 0.7.4               */
+/* Ver 0.7.5               */
 /* Original by K-ARAI      */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <malloc.h>
 #include <memory.h>
+#include <float.h>
 
 #include "FloatedBigDigit32.h"
 
@@ -1256,6 +1257,43 @@ int FloatedBigDigit32::toString2(char* str,int keta,int small) {
 
 }
 
+/****************************************************************************/
+
+double FloatedBigDigit32::toDouble() {
+
+    double ret = 0.0;
+    int width = 10;
+
+    if(this->isOver()) {
+        return DBL_MAX;
+    }
+
+    if(width>this->N) width = this->N; 
+
+    for(int i=0;i<=width;i++) {
+        ret *= floatedBigDigit_unit;
+        ret += this->Val[i];
+    }
+
+    int ord = this->order();
+
+    ord -= width*floatedBigDigit_K;
+
+    if(ord>0) {
+        for(int j=1;j<=ord;j++) ret *= 10;
+    }
+
+    if(ord<0) {
+        for(int j=-1;j>=ord;j--) ret /= 10;
+    }
+
+    if(this->isMinus()) {
+        ret = - ret;
+    }
+
+    return ret;
+
+}
 
 /****************************************************************************/
 /****************************************************************************/
