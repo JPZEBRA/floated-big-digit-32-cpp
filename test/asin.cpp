@@ -24,10 +24,10 @@ int main(int argc,const char **argv) {
 
     PI->SetPI();
 
-    for(int i=0;i<=3600;i++) {
+    for(int i=0;i<=9000;i+=5) {
 
        N->set(i);
-       N->div(10);
+       N->div(100);
 
        N->Mul(PI);
        N->div(180);
@@ -41,7 +41,7 @@ int main(int argc,const char **argv) {
 
        VAL->toString(buff,10000);
 
-       printf("%5.1f %s R:%d\n",(float)i/10,buff,ret);
+       printf("%5.2f %s R:%d\n",(float)i/100,buff,ret);
   
     }
 

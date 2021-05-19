@@ -1,7 +1,7 @@
 /* FLOATED BIG DIGIT CLASS */
 /* CREATE  2021.02.06      */
 /* REVISED 2021.05.18      */
-/* Ver 0.7.3               */
+/* Ver 0.7.4               */
 /* Original by K-ARAI      */
 
 #include <stdio.h>
@@ -3514,7 +3514,10 @@ int FloatedBigDigit32::SetAsin(FloatedBigDigit32* V) {
     while(C->compare(floatedBigDigit_LM2) < 0 && !this->lastBit()) {
         this->Mul(F);
         this->Mul(F);
+
+        this->Mul(C);
         C->add(1);
+        this->Div(C,false);
         C->add(1);
     }
 
@@ -3527,13 +3530,13 @@ int FloatedBigDigit32::SetAsin(FloatedBigDigit32* V) {
 
         this->Mul(C);
         C->add(1);
-        this->Div(C);
+        this->Div(C,false);
         C->sub(1);
 
         this->Mul(F);
         this->Mul(C);
         C->add(2);
-        this->Div(C);
+        this->Div(C,false);
         C->sub(4);
 
         this->add(1);
@@ -3632,9 +3635,15 @@ int FloatedBigDigit32::SetAsinh(FloatedBigDigit32* V) {
 
 
     do{
+
         this->Mul(V);
         this->Mul(V);
-         C->add(2);
+
+        this->Mul(C);
+        C->add(1);
+        this->Div(C,false);
+        C->add(1);
+
     } while(C->compare(floatedBigDigit_LM2) < 0 && !this->lastBit());
 
     bool stop = ( C->compare(floatedBigDigit_LM2)>=0 );
@@ -3645,12 +3654,12 @@ int FloatedBigDigit32::SetAsinh(FloatedBigDigit32* V) {
         this->Mul(C);
         C->add(1);
         this->Mul(V);
-        this->Div(C);
+        this->Div(C,false);
         C->sub(1);
         this->Mul(C);
         C->add(2);
         this->Mul(V);
-        this->Div(C);
+        this->Div(C,false);
         C->sub(4);
 
         this->sub(1);
@@ -3700,7 +3709,12 @@ int FloatedBigDigit32::SetAsinhB(FloatedBigDigit32* V) {
     do{
         this->Mul(F);
         this->Mul(F);
-        C->add(2);
+
+        C->add(1);
+        this->Mul(C);
+        C->add(1);
+        this->Div(C,false);
+
     } while(C->compare(floatedBigDigit_LM2) < 0 && !this->lastBit());
 
     bool stop = ( C->compare(floatedBigDigit_LM2)>=0 );
@@ -3714,14 +3728,14 @@ int FloatedBigDigit32::SetAsinhB(FloatedBigDigit32* V) {
         C->sub(1);
         this->Mul(C);
         C->add(1);
-        this->Div(C);
+        this->Div(C,false);
 
         this->Mul(F);
           
         C->sub(2);
         this->Mul(C);
         C->add(2);
-        this->Div(C);
+        this->Div(C,false);
 
         C->sub(2);
 
@@ -3732,7 +3746,7 @@ int FloatedBigDigit32::SetAsinhB(FloatedBigDigit32* V) {
 
     this->Mul(F);
     this->Mul(F);
-    this->div(4);
+    this->div(4,false);
 
     FloatedBigDigit32* B = new FloatedBigDigit32();
 
@@ -3795,9 +3809,15 @@ int FloatedBigDigit32::SetAcosh(FloatedBigDigit32* V) {
     this->set(1);
 
     do{
+
         this->Mul(F);
         this->Mul(F);
-        C->add(2);
+
+        C->add(1);
+        this->Mul(C);
+        C->add(1);
+        this->Div(C,false);
+
     } while(C->compare(floatedBigDigit_LM2) < 0 && !this->lastBit());
 
     bool stop = ( C->compare(floatedBigDigit_LM2)>=0 );
@@ -3810,14 +3830,14 @@ int FloatedBigDigit32::SetAcosh(FloatedBigDigit32* V) {
         C->sub(1);
         this->Mul(C);
         C->add(1);
-        this->Div(C);
+        this->Div(C,false);
 
         this->Mul(F);
           
         C->sub(2);
         this->Mul(C);
         C->add(2);
-        this->Div(C);
+        this->Div(C,false);
 
         C->sub(2);
 
@@ -3827,7 +3847,7 @@ int FloatedBigDigit32::SetAcosh(FloatedBigDigit32* V) {
 
     this->Mul(F);
     this->Mul(F);
-    this->div(4);
+    this->div(4,false);
 
     FloatedBigDigit32* B = new FloatedBigDigit32();
 
@@ -3890,7 +3910,7 @@ int FloatedBigDigit32::SetAtanh(FloatedBigDigit32* V) {
 
         this->Mul(C);
         C->add(2);
-        this->Div(C);
+        this->Div(C,false);
         C->sub(4);
 
         this->add(1);
