@@ -9,55 +9,30 @@ int main(int argc,const char **argv) {
     char buff[10000];
 
     if(argc!=3) {
-        printf("USAGE: asinh KETA n \n");
+        printf("USAGE: asinh KETA value \n");
         return 0;
     }
 
     long KETA = atol(argv[1]);
 
-    long n = atol(argv[2]);
-
     SetFloatedBigDigit32Keta((int)KETA);
 
+    FloatedBigDigit32* PI = new FloatedBigDigit32();
     FloatedBigDigit32* VAL = new FloatedBigDigit32();
-
-    FloatedBigDigit32* V= new FloatedBigDigit32();
-
     FloatedBigDigit32* N = new FloatedBigDigit32();
 
-    for(int i=0;i<=n*10;i++) {
+    PI->SetPI();
 
-       N->set(i);
-       N->div(10);
+    N->Set(argv[2]);
 
-       V->SetSinh(N);
+    int ret = VAL->SetAsinh(N);
 
-       int ret = VAL->SetAsinh(V);
+    VAL->toString(buff,10000,false);
 
-       VAL->toString(buff,10000);
-
-       printf("+%5.1f %s R:%d\n",(float)i/10,buff,ret);
+    printf("%s R:%d\n",buff,ret);
   
-    }
-
-    for(int i=0;i<=n*10;i++) {
-
-       N->set(i);
-       N->div(10);
-       N->Sig();
-
-       V->SetSinh(N);
-
-       int ret = VAL->SetAsinh(V);
-
-       VAL->toString(buff,10000);
-
-       printf("-%5.1f %s R:%d\n",(float)i/10,buff,ret);
-  
-    }
-
+    delete PI;
     delete VAL;
-    delete V;
     delete N;
 
     FreeFloatedBigDigit32();
@@ -65,3 +40,4 @@ int main(int argc,const char **argv) {
     return 0;
 
 }
+

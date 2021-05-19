@@ -8,8 +8,8 @@ int main(int argc,const char **argv) {
 
     char buff[10000];
 
-    if(argc!=2) {
-        printf("USAGE: acos KETA\n");
+    if(argc!=3) {
+        printf("USAGE: acos KETA value \n");
         return 0;
     }
 
@@ -20,35 +20,23 @@ int main(int argc,const char **argv) {
     FloatedBigDigit32* PI = new FloatedBigDigit32();
     FloatedBigDigit32* VAL = new FloatedBigDigit32();
     FloatedBigDigit32* N = new FloatedBigDigit32();
-    FloatedBigDigit32* V = new FloatedBigDigit32();
 
     PI->SetPI();
 
-    for(int i=0;i<=3600;i++) {
+    N->Set(argv[2]);
 
-       N->set(i);
-       N->div(10);
+    int ret = VAL->SetAcos(N);
 
-       N->Mul(PI);
-       N->div(180);
+    VAL->mul(180);
+    VAL->Div(PI);
 
-       V->SetCos(N);
+    VAL->toString(buff,10000,false);
 
-       int ret = VAL->SetAcos(V);
-
-       VAL->mul(180);
-       VAL->Div(PI);
-
-       VAL->toString(buff,10000);
-
-       printf("%5.1f %s R:%d\n",(float)i/10,buff,ret);
+    printf("%s R:%d\n",buff,ret);
   
-    }
-
     delete PI;
     delete VAL;
     delete N;
-    delete V;
 
     FreeFloatedBigDigit32();
 

@@ -9,47 +9,29 @@ int main(int argc,const char **argv) {
     char buff[10000];
 
     if(argc!=3) {
-        printf("USAGE: cosh KETA n \n");
+        printf("USAGE: cosh KETA value \n");
         return 0;
     }
 
     long KETA = atol(argv[1]);
 
-    long n = atol(argv[2]);
-
     SetFloatedBigDigit32Keta((int)KETA);
 
+    FloatedBigDigit32* PI = new FloatedBigDigit32();
     FloatedBigDigit32* VAL = new FloatedBigDigit32();
-
     FloatedBigDigit32* N = new FloatedBigDigit32();
 
-    for(int i=0;i<=n*10;i++) {
+    PI->SetPI();
 
-       N->set(i);
-       N->div(10);
+    N->Set(argv[2]);
 
-       int ret = VAL->SetCosh(N);
+    int ret = VAL->SetCosh(N);
 
-       VAL->toString(buff,10000);
+    VAL->toString(buff,10000,false);
 
-       printf("+%5.1f %s R:%d\n",(float)i/10,buff,ret);
+    printf("%s R:%d\n",buff,ret);
   
-    }
-
-    for(int i=0;i<=n*10;i++) {
-
-       N->set(i);
-       N->div(10);
-       N->Sig();
-
-       int ret = VAL->SetCosh(N);
-
-       VAL->toString(buff,10000);
-
-       printf("-%5.1f %s R:%d\n",(float)i/10,buff,ret);
-  
-    }
-
+    delete PI;
     delete VAL;
     delete N;
 

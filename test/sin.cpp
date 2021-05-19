@@ -9,7 +9,7 @@ int main(int argc,const char **argv) {
     char buff[10000];
 
     if(argc!=3) {
-        printf("USAGE: atan KETA value \n");
+        printf("USAGE: sin KETA value \n");
         return 0;
     }
 
@@ -25,10 +25,11 @@ int main(int argc,const char **argv) {
 
     N->Set(argv[2]);
 
-    int ret = VAL->SetAtan(N);
 
-    VAL->mul(180);
-    VAL->Div(PI);
+    N->Mul(PI);
+    N->div(180);
+
+    int ret = VAL->SetSin(N);
 
     VAL->toString(buff,10000,false);
 
