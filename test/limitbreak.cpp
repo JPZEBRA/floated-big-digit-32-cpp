@@ -17,7 +17,7 @@ int main(int argc,const char **argv) {
 
     long n = atol(argv[2]);
 
-    long st = n / 1000;
+    long st = n / 50;
 
     if(st<1) st = 1;
 

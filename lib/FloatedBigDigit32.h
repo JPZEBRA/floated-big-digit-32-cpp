@@ -1,7 +1,7 @@
 /* FLOATED BIG DIGIT CLASS */
 /* CREATE  2021.02.06      */
 /* REVISED 2021.05.18      */
-/* Ver 0.7.2               */
+/* Ver 0.7.3               */
 /* Original by K-ARAI      */
 
 
@@ -119,7 +119,7 @@ class FloatedBigDigit32 {
     /****************************************************************************/
 
         int mul(int val);
-        int div(int val);
+        int div(int val,bool div_fast = true);
         int add(int val);
         int sub(int val);
 
@@ -128,7 +128,7 @@ class FloatedBigDigit32 {
         int Add(FloatedBigDigit32* V);
         int Sub(FloatedBigDigit32* V);
         int Mul(FloatedBigDigit32* V);
-        int Div(FloatedBigDigit32* V);
+        int Div(FloatedBigDigit32* V,bool div_fast = true);
 
      /****************************************************************************/
 
