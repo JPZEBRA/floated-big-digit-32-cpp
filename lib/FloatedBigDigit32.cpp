@@ -1,7 +1,7 @@
 /* FLOATED BIG DIGIT CLASS */
 /* CREATE  2021.02.06      */
-/* REVISED 2021.05.18      */
-/* Ver 0.7.5               */
+/* REVISED 2021.05.21      */
+/* Ver 0.7.6               */
 /* Original by K-ARAI      */
 
 #include <stdio.h>
@@ -23,7 +23,7 @@ int floatedBigDigit_LMT = 12000;
 int floatedBigDigit_LM2 = 30000;
 int floatedBigDigit_LMX = 99990;
 int floatedBigDigit_LST = 5;
-int floatedBigDigit_LSX = 10;
+int floatedBigDigit_LSX = 7;
 
 /****************************************************************************/
 
@@ -3235,7 +3235,18 @@ int FloatedBigDigit32::SetSinh(FloatedBigDigit32* V) {
         this->Div(C,false);
     } while(C->compare(floatedBigDigit_LM2) < 0 && !this->lastBit());
 
-    bool stop = ( C->compare(floatedBigDigit_LM2)>=0 || this->isOver() );
+    if( this->isOver() || this->compare(1) > 0 ) {
+
+        this->overflow();
+
+        delete F;
+        delete C;
+
+        return floatedBigDigitERR;
+
+    }
+
+    bool stop = ( C->compare(floatedBigDigit_LM2)>=0 );
 
     this->set(1);
     while(C->compare(1)>0) {
@@ -3296,7 +3307,17 @@ int FloatedBigDigit32::SetCosh(FloatedBigDigit32* V) {
         this->Div(C,false);
     } while(C->compare(floatedBigDigit_LM2) < 0 && !this->lastBit());
 
-    bool stop = ( C->compare(floatedBigDigit_LM2)>=0 || this->isOver() );
+    if( this->isOver() || this->compare(1) > 0 ) {
+
+        this->overflow();
+
+        delete C;
+
+        return floatedBigDigitERR;
+
+    }
+
+    bool stop = ( C->compare(floatedBigDigit_LM2)>=0 );
 
     this->set(1);
     while(C->compare(1)>0) {
