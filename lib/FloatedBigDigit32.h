@@ -1,7 +1,7 @@
 /* FLOATED BIG DIGIT CLASS */
 /* CREATE  2021.02.06      */
 /* REVISED 2021.05.21      */
-/* Ver 0.7.6               */
+/* Ver 0.7.7               */
 /* Original by K-ARAI      */
 
 
@@ -221,6 +221,7 @@ class FloatedBigDigit32 {
         int SetAsinhB(FloatedBigDigit32* V);
         int SetAcosh(FloatedBigDigit32* V);
         int SetAtanh(FloatedBigDigit32* V);
+        int SetAtanhB(FloatedBigDigit32* V);
 
     /****************************************************************************/
 

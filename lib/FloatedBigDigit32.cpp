@@ -1,7 +1,7 @@
 /* FLOATED BIG DIGIT CLASS */
 /* CREATE  2021.02.06      */
 /* REVISED 2021.05.21      */
-/* Ver 0.7.6               */
+/* Ver 0.7.7               */
 /* Original by K-ARAI      */
 
 #include <stdio.h>
@@ -3692,7 +3692,6 @@ int FloatedBigDigit32::SetAsinh(FloatedBigDigit32* V) {
     bool rf = V->minus;
     V->minus = false;
 
-
     do{
 
         this->Mul(V);
@@ -3946,6 +3945,7 @@ int FloatedBigDigit32::SetAtanh(FloatedBigDigit32* V) {
 
     if(this->compare(1)>=0) {
         this->overflow();
+        V->minus = rf;
         return floatedBigDigitERR;
     }
 
@@ -3960,6 +3960,12 @@ int FloatedBigDigit32::SetAtanh(FloatedBigDigit32* V) {
     } while(C->compare(floatedBigDigit_LM2) < 0 && !this->lastBit());
 
     bool stop = ( C->compare(floatedBigDigit_LM2)>=0 );
+
+
+    if(stop) {
+        delete C;
+        return this->SetAtanhB(V);
+    }
 
     this->set(1);
     while(C->compare(1)>=0) {
@@ -3981,8 +3987,52 @@ int FloatedBigDigit32::SetAtanh(FloatedBigDigit32* V) {
     V->minus = rf;
 
     delete C;
+    return floatedBigDigitOK;
 
-    if(stop) return floatedBigDigitERR;
+}
+
+/****************************************************************************/
+
+int FloatedBigDigit32::SetAtanhB(FloatedBigDigit32* V) {
+
+    if(V->isOver()) {
+        this->overflow();
+        return floatedBigDigitERR;
+    }
+
+    FloatedBigDigit32* F = new FloatedBigDigit32();
+
+    F->Copy(V);
+
+    bool rf = F->minus;
+    F->minus = false;
+
+    if(F->compare(1)>=0) {
+        this->overflow();
+        delete F;
+        return floatedBigDigitERR;
+    }
+
+    FloatedBigDigit32* A = new FloatedBigDigit32();
+    FloatedBigDigit32* B = new FloatedBigDigit32();
+
+    A->set(1);
+    A->Add(F);
+    B->set(1);
+    B->Sub(F);
+
+    A->Div(B);
+
+    this->SetLn(A);
+    this->div(2,false);
+
+    if(!this->isOver()) this->minus = rf;
+
+    delete F;
+    delete A;
+    delete B;
+
+    if(this->isOver())return floatedBigDigitERR;
 
     return floatedBigDigitOK;
 
