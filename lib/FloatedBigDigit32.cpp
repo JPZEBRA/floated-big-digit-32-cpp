@@ -3963,11 +3963,6 @@ int FloatedBigDigit32::SetAsinhR(FloatedBigDigit32* V) {
         return this->SetAsinh(V);
     }
 
-    if(F->order() < -floatedBigDigit_order*4/10 ) {
-        delete F;
-        return this->SetAsinhB(V);
-    }
-
     FloatedBigDigit32* C = new FloatedBigDigit32();
 
     C->set(0);
@@ -4121,11 +4116,6 @@ int FloatedBigDigit32::SetAcosh(FloatedBigDigit32* V) {
         this->overflow();
         delete F;
         return floatedBigDigitERR;
-    }
-
-    if(F->order() < -floatedBigDigit_order*4/10 ) {
-        delete F;
-        return this->SetAcoshB(V);
     }
 
     FloatedBigDigit32* C = new FloatedBigDigit32();
