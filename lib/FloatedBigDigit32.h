@@ -1,7 +1,7 @@
 /* FLOATED BIG DIGIT CLASS */
 /* CREATE  2021.02.06      */
 /* REVISED 2021.05.21      */
-/* Ver 0.7.8               */
+/* Ver 0.8.0               */
 /* Original by K-ARAI      */
 
 
@@ -68,9 +68,7 @@ class FloatedBigDigit32 {
         int MulSmall(FloatedBigDigit32* V);
         int DivSmall(FloatedBigDigit32* V);
 
-
-        int setAtan2(int y,int x);
-        int setAtanDiv(int d);
+        int SetAsinhR(FloatedBigDigit32* V);
 
         int Power_main(FloatedBigDigit32* V,bool boost);
         int PowerDiv_boost(FloatedBigDigit32* V);
@@ -198,18 +196,25 @@ class FloatedBigDigit32 {
     /****************************************************************************/
 
         int SetSin(FloatedBigDigit32* V);
+
         int SetCos(FloatedBigDigit32* V);
+
         int SetTan(FloatedBigDigit32* V);
 
     /****************************************************************************/
 
         int SetSinh (FloatedBigDigit32* V);
         int SetSinhB(FloatedBigDigit32* V);
+
         int SetCosh (FloatedBigDigit32* V);
         int SetCoshB(FloatedBigDigit32* V);
+
         int SetTanh (FloatedBigDigit32* V);
 
     /****************************************************************************/
+
+        int setAtan2(int y,int x);
+        int setAtanDiv(int d);
 
         int SetAtan2(FloatedBigDigit32* Y, FloatedBigDigit32* X);
         int SetAtan(FloatedBigDigit32* V);
@@ -220,9 +225,10 @@ class FloatedBigDigit32 {
     /****************************************************************************/
 
         int SetAsinh (FloatedBigDigit32* V);
-        int SetAsinhR(FloatedBigDigit32* V);
+        int SetAsinhB(FloatedBigDigit32* V);
 
         int SetAcosh (FloatedBigDigit32* V);
+        int SetAcoshB(FloatedBigDigit32* V);
 
         int SetAtanh (FloatedBigDigit32* V);
         int SetAtanhB(FloatedBigDigit32* V);
