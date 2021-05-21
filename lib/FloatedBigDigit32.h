@@ -1,7 +1,7 @@
 /* FLOATED BIG DIGIT CLASS */
 /* CREATE  2021.02.06      */
 /* REVISED 2021.05.21      */
-/* Ver 0.7.7               */
+/* Ver 0.7.8               */
 /* Original by K-ARAI      */
 
 
@@ -203,9 +203,11 @@ class FloatedBigDigit32 {
 
     /****************************************************************************/
 
-        int SetSinh(FloatedBigDigit32* V);
-        int SetCosh(FloatedBigDigit32* V);
-        int SetTanh(FloatedBigDigit32* V);
+        int SetSinh (FloatedBigDigit32* V);
+        int SetSinhB(FloatedBigDigit32* V);
+        int SetCosh (FloatedBigDigit32* V);
+        int SetCoshB(FloatedBigDigit32* V);
+        int SetTanh (FloatedBigDigit32* V);
 
     /****************************************************************************/
 
@@ -217,10 +219,12 @@ class FloatedBigDigit32 {
 
     /****************************************************************************/
 
-        int SetAsinh(FloatedBigDigit32* V);
-        int SetAsinhB(FloatedBigDigit32* V);
-        int SetAcosh(FloatedBigDigit32* V);
-        int SetAtanh(FloatedBigDigit32* V);
+        int SetAsinh (FloatedBigDigit32* V);
+        int SetAsinhR(FloatedBigDigit32* V);
+
+        int SetAcosh (FloatedBigDigit32* V);
+
+        int SetAtanh (FloatedBigDigit32* V);
         int SetAtanhB(FloatedBigDigit32* V);
 
     /****************************************************************************/

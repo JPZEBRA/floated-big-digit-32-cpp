@@ -1,7 +1,7 @@
 /* FLOATED BIG DIGIT CLASS */
 /* CREATE  2021.02.06      */
 /* REVISED 2021.05.21      */
-/* Ver 0.7.7               */
+/* Ver 0.7.8               */
 /* Original by K-ARAI      */
 
 #include <stdio.h>
@@ -3237,12 +3237,10 @@ int FloatedBigDigit32::SetSinh(FloatedBigDigit32* V) {
 
     if( this->isOver() || this->compare(1) > 0 ) {
 
-        this->overflow();
-
         delete F;
         delete C;
 
-        return floatedBigDigitERR;
+        return this->SetSinhB(V);
 
     }
 
@@ -3280,6 +3278,46 @@ int FloatedBigDigit32::SetSinh(FloatedBigDigit32* V) {
 
 /****************************************************************************/
 
+int FloatedBigDigit32::SetSinhB(FloatedBigDigit32* V) {
+
+    if(V->isOver()) {
+        this->overflow();
+        return floatedBigDigitERR;
+    }
+
+    FloatedBigDigit32* F = new FloatedBigDigit32();
+
+    F->Copy(V);
+
+    bool rf = F->minus;
+    F->minus = false;
+
+    FloatedBigDigit32* A = new FloatedBigDigit32();
+    FloatedBigDigit32* B = new FloatedBigDigit32();
+
+    A->SetExp(F);
+
+    B->set(1);
+    B->Div(A);
+
+    this->Copy(A);
+    this->Sub(B);
+    this->div(2,false);
+
+    if(!this->isOver()) this->minus = rf;
+
+    delete F;
+    delete A;
+    delete B;
+
+    if(this->isOver())return floatedBigDigitERR;
+
+    return floatedBigDigitOK;
+
+}
+
+/****************************************************************************/
+
 int FloatedBigDigit32::SetCosh(FloatedBigDigit32* V) {
 
     if(V->isOver()) {
@@ -3309,11 +3347,9 @@ int FloatedBigDigit32::SetCosh(FloatedBigDigit32* V) {
 
     if( this->isOver() || this->compare(1) > 0 ) {
 
-        this->overflow();
-
         delete C;
 
-        return floatedBigDigitERR;
+        return this->SetCoshB(V);
 
     }
 
@@ -3338,6 +3374,43 @@ int FloatedBigDigit32::SetCosh(FloatedBigDigit32* V) {
     if(this->checkOver()) return floatedBigDigitERR;
 
     if(stop) return floatedBigDigitERR;
+
+    return floatedBigDigitOK;
+
+}
+
+/****************************************************************************/
+
+int FloatedBigDigit32::SetCoshB(FloatedBigDigit32* V) {
+
+    if(V->isOver()) {
+        this->overflow();
+        return floatedBigDigitERR;
+    }
+
+    FloatedBigDigit32* F = new FloatedBigDigit32();
+
+    F->Copy(V);
+
+    F->minus = false;
+
+    FloatedBigDigit32* A = new FloatedBigDigit32();
+    FloatedBigDigit32* B = new FloatedBigDigit32();
+
+    A->SetExp(F);
+
+    B->set(1);
+    B->Div(A);
+
+    this->Copy(A);
+    this->Add(B);
+    this->div(2,false);
+
+    delete F;
+    delete A;
+    delete B;
+
+    if(this->isOver())return floatedBigDigitERR;
 
     return floatedBigDigitOK;
 
@@ -3682,7 +3755,7 @@ int FloatedBigDigit32::SetAsinh(FloatedBigDigit32* V) {
     this->minus = false;
 
     if(this->compare(1)>=0) {
-        return this->SetAsinhB(V);
+        return this->SetAsinhR(V);
     }
 
     FloatedBigDigit32* C = new FloatedBigDigit32();
@@ -3739,7 +3812,7 @@ int FloatedBigDigit32::SetAsinh(FloatedBigDigit32* V) {
 
 /****************************************************************************/
 
-int FloatedBigDigit32::SetAsinhB(FloatedBigDigit32* V) {
+int FloatedBigDigit32::SetAsinhR(FloatedBigDigit32* V) {
 
     if(V->isOver()) {
         this->overflow();
