@@ -1,7 +1,7 @@
 /* FLOATED BIG DIGIT CLASS */
 /* CREATE  2021.02.06      */
 /* REVISED 2021.05.21      */
-/* Ver 0.8.4               */
+/* Ver 0.8.5               */
 /* Original by K-ARAI      */
 
 #include <stdio.h>
@@ -38,6 +38,11 @@ int floatedBigDigitCashedE_R;
 bool floatedBigDigitCashedPI = false;
 FloatedBigDigit32* floatedBigDigitCashPI;
 int floatedBigDigitCashedPI_R;
+
+
+bool floatedBigDigitCashedLB = false;
+FloatedBigDigit32* floatedBigDigitCashLB;
+int floatedBigDigitCashedLB_L = 0;
 
 /****************************************************************************/
 /****************************************************************************/
@@ -86,6 +91,10 @@ int FreeFloatedBigDigit32() {
 
     floatedBigDigitCashedPI = false;
 
+    if(floatedBigDigitCashedLB) delete floatedBigDigitCashLB;
+
+    floatedBigDigitCashedLB = false;
+
     return floatedBigDigitOK;
 
 }
@@ -119,15 +128,15 @@ FloatedBigDigit32::~FloatedBigDigit32() {
 
 int FloatedBigDigit32::clear() {
 
-        for(int i=0;i<=this->N+floatedBigDigit_F;i++) this->Val[i] = 0;
+    for(int i=0;i<=this->N+floatedBigDigit_F;i++) this->Val[i] = 0;
 
-        this->shiftPoint = 0;
+    this->shiftPoint = 0;
 
-        this->small = false;
+    this->small = false;
 
-        this->minus = false;
+    this->minus = false;
 
-        return floatedBigDigitOK;
+    return floatedBigDigitOK;
 
 }   
 
@@ -135,26 +144,26 @@ int FloatedBigDigit32::clear() {
 
 int FloatedBigDigit32::set(int val) {
 
-        this->clear();
+    this->clear();
 
-        if(val<0) {
-            this->minus = true;
-            val = -val;
-        }
+    if(val<0) {
+        this->minus = true;
+        val = -val;
+    }
 
-        if(val > floatedBigDigit_unit) {
-            this->overflow();
-            return floatedBigDigitERR;
-        }
+    if(val > floatedBigDigit_unit) {
+        this->overflow();
+        return floatedBigDigitERR;
+    }
 
-        if(val == floatedBigDigit_unit) {
-            this->Val[0] = 1;
-            this->shift(+1);        
-        } else {
-            this->Val[0] = val;
-        }
+    if(val == floatedBigDigit_unit) {
+        this->Val[0] = 1;
+        this->shift(+1);        
+    } else {
+        this->Val[0] = val;
+    }
 
-        return floatedBigDigitOK;
+    return floatedBigDigitOK;
 
 }   
 
@@ -248,31 +257,35 @@ int FloatedBigDigit32::Set(const char* str) {
 
 bool FloatedBigDigit32::lastBit() {
 
-        int last_bit_boost = floatedBigDigit_LST;
+    int last_bit_boost = floatedBigDigit_LST;
 
-        if(this->isOver()) return true;
+    if(this->isOver()) return true;
 
-        if(this->isEmpty()) return true;
+    if(this->isEmpty()) return true;
 
-        if(!this->isSmall()) return false;
+    if(!this->isSmall()) return false;
 
-        bool rf = this->minus;
-        this->minus = false;
+    bool rf = this->minus;
+    this->minus = false;
 
+    if( floatedBigDigitCashedLB && floatedBigDigitCashedLB_L != last_bit_boost) {
+        delete floatedBigDigitCashLB;
+        floatedBigDigitCashedLB = false;
+    }
 
-        FloatedBigDigit32* CC = new FloatedBigDigit32();
+    if(!floatedBigDigitCashedLB) {
+        floatedBigDigitCashLB  = new FloatedBigDigit32();
+        floatedBigDigitCashedLB = true;
+        floatedBigDigitCashedLB_L = last_bit_boost;
+        floatedBigDigitCashLB->set(1);
+        floatedBigDigitCashLB->shiftPoint = - ( floatedBigDigitCashLB->N + floatedBigDigit_F*last_bit_boost );
+    }
 
-        CC->set(1);
+    bool ret = !(this->Compare(floatedBigDigitCashLB)>=0);
 
-        CC->shiftPoint = - ( CC->N + floatedBigDigit_F*last_bit_boost );
+    this->minus = rf;
 
-        bool ret = !(this->Compare(CC)>=0);
-
-        this->minus = rf;
-
-        delete CC;
-
-        return ret;
+    return ret;
 
 }
 
@@ -280,16 +293,16 @@ bool FloatedBigDigit32::lastBit() {
 
 int FloatedBigDigit32::Copy(FloatedBigDigit32* V) {
 
-        if( this->N != V->N ) return floatedBigDigitERR;
+    if( this->N != V->N ) return floatedBigDigitERR;
 
-        for(int i=0;i<=this->N+floatedBigDigit_F;i++) this->Val[i] = V->Val[i];
+    for(int i=0;i<=this->N+floatedBigDigit_F;i++) this->Val[i] = V->Val[i];
 
-        this->shiftPoint = V->shiftPoint;
+    this->shiftPoint = V->shiftPoint;
 
-        this->small = V->small;
-        this->minus = V->minus;
+    this->small = V->small;
+    this->minus = V->minus;
 
-        return floatedBigDigitOK;
+    return floatedBigDigitOK;
 
 }   
 
@@ -297,7 +310,7 @@ int FloatedBigDigit32::Copy(FloatedBigDigit32* V) {
 
 int FloatedBigDigit32::size() {
 
-        return this->N;
+    return this->N;
 
 }
 
