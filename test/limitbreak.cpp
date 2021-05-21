@@ -8,71 +8,81 @@ int main(int argc,const char **argv) {
 
     char buff[10000];
 
-    if(argc!=3) {
-        printf("USAGE: limitbreak KETA n \n");
+    if(argc!=2) {
+        printf("USAGE: limitbreak KETA\n");
         return 0;
     }
 
     long KETA = atol(argv[1]);
 
-    long n = atol(argv[2]);
-
-    long st = n / 50;
-
-    if(st<1) st = 1;
-
-    if(st>=100000) return -1;
-
 
     SetFloatedBigDigit32Keta((int)KETA);
 
-    FloatedBigDigit32* VAL = new FloatedBigDigit32();
+    FloatedBigDigit32* PI = new FloatedBigDigit32();
+
+    FloatedBigDigit32* V1 = new FloatedBigDigit32();
+
+    FloatedBigDigit32* V2 = new FloatedBigDigit32();
 
     FloatedBigDigit32* N = new FloatedBigDigit32();
 
-    printf("\n--- TEST COSH ---\n");
+    FloatedBigDigit32* B = new FloatedBigDigit32();
 
-    N->set(0);
+    PI->SetPI();
 
-    for(long i=0;i<=n;i+=st) {
 
-       int ret = VAL->SetCosh(N);
+    printf("\n--- TEST ATAN ---\n");
 
-       if(ret!=0) break;
 
-       VAL->toString(buff,10000,false);
+    int ret;
 
-       printf("+%8.1f %s R:%d\r",(float)i,buff,ret);
+    for(int lb=0; lb<=1;lb++) {
 
-       N->add((int)st);
-  
+        B->set(1);
+
+        for(int i=0;i<15;i++) {
+
+            B->mul(3);
+
+            B->div(4);
+
+            N->set(45);
+
+            N->Sub(B);
+
+            double ang = N->toDouble();
+
+            N->Mul(PI);
+
+            N->div(180);
+
+            V1->SetTan(N);
+
+            ret = V2->SetAtan(V1);
+
+            V2->mul(180);
+
+            V2->Div(PI);
+
+            V2->toString(buff,10000,false);
+
+            printf("%f %s R:%d \n",ang,buff,ret);
+
+        }
+
+        if(lb>0) break;
+
+        printf("\n>>> LIMIT BREAK <<<\n");
+
+        Fbd32LimitBreak();
+
     }
 
-    printf("\n--- LIMIT BREAK ---\n");
-
-    Fbd32LimitBreak();
-
-    N->set(0);
-
-    for(long i=0;i<=n;i+=st) {
-
-       int ret = VAL->SetCosh(N);
-
-       if(ret!=0) break;
-
-       VAL->toString(buff,10000,false);
-
-       printf("+%8.1f %s R:%d\r",(float)i,buff,ret);
-
-       N->add((int)st);
-  
-    }
-
-    printf("\n");
-
-
-    delete VAL;
+    delete PI;
+    delete V1;
+    delete V2;
     delete N;
+    delete B;
 
     FreeFloatedBigDigit32();
 
