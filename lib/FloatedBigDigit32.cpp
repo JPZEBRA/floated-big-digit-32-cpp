@@ -1,7 +1,7 @@
 /* FLOATED BIG DIGIT CLASS */
 /* CREATE  2021.02.06      */
 /* REVISED 2021.05.21      */
-/* Ver 0.8.1               */
+/* Ver 0.8.2               */
 /* Original by K-ARAI      */
 
 #include <stdio.h>
@@ -67,6 +67,8 @@ int SetFloatedBigDigit32Keta(int k) {
 
     floatedBigDigit_keta = k;
 
+    FreeFloatedBigDigit32();
+
     return floatedBigDigitOK;
 
 }
@@ -78,7 +80,11 @@ int FreeFloatedBigDigit32() {
 
     if(floatedBigDigitCashedE ) delete floatedBigDigitCashE;
 
+    floatedBigDigitCashedE = false;
+
     if(floatedBigDigitCashedPI) delete floatedBigDigitCashPI;
+
+    floatedBigDigitCashedPI = false;
 
     return floatedBigDigitOK;
 
