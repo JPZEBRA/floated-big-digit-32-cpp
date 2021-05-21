@@ -29,11 +29,11 @@ int main(int argc,const char **argv) {
 
         K->set(k);
 
-        VAL->SetCombination(N,K);
+        int ret = VAL->SetCombination(N,K);
 
-        VAL->toString2(buff,KETA);
+        VAL->toString2(buff,80);
 
-        printf("%3d C %3d = %s\n",(int)n,k,buff);
+        printf("%4d C %4d = %s R:%d\n",(int)n,k,buff,ret);
 
     }
 

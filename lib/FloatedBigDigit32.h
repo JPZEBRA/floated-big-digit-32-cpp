@@ -1,7 +1,7 @@
 /* FLOATED BIG DIGIT CLASS */
 /* CREATE  2021.02.06      */
 /* REVISED 2021.05.21      */
-/* Ver 0.8.3               */
+/* Ver 0.8.4               */
 /* Original by K-ARAI      */
 
 
@@ -102,6 +102,7 @@ class FloatedBigDigit32 {
         bool isSmall();
         bool isSeed();
         bool isBig();
+        bool isExp();
         bool isOver();
         bool isZero();
         bool isEmpty();

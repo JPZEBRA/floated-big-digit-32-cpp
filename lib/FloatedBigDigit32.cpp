@@ -1,7 +1,7 @@
 /* FLOATED BIG DIGIT CLASS */
 /* CREATE  2021.02.06      */
 /* REVISED 2021.05.21      */
-/* Ver 0.8.3               */
+/* Ver 0.8.4               */
 /* Original by K-ARAI      */
 
 #include <stdio.h>
@@ -449,6 +449,24 @@ bool FloatedBigDigit32::isBig() {
     if(this->shiftPoint<=0) return false;
 
     return true;
+
+}
+
+/****************************************************************************/
+
+bool FloatedBigDigit32::isExp() {
+
+    if(this->isOver()) {
+        return false;
+    }
+
+    if(this->isZero()) return false;
+
+    if(this->shiftPoint>=this->N) return true;
+
+    if(this->valid_size()!=this->shiftPoint+1) return true;
+
+    return false;
 
 }
 
@@ -1830,7 +1848,9 @@ int FloatedBigDigit32::dice1(int n) {
     this->add(1);
     this->Fix();
 
-   return floatedBigDigitOK;
+    if(this->isExp()) return floatedBigDigitERR;
+
+    return floatedBigDigitOK;
 
 }
 
@@ -1848,6 +1868,8 @@ int FloatedBigDigit32::dice(int a,int b) {
     }
 
     delete D;
+
+    if(this->isExp()) return floatedBigDigitERR;
 
     return floatedBigDigitOK;
 
@@ -1920,6 +1942,8 @@ int FloatedBigDigit32::SetFactorial(FloatedBigDigit32* V) {
 
     if(this->checkOver()) return floatedBigDigitERR;
 
+    if(this->isExp()) return floatedBigDigitERR;
+
     return floatedBigDigitOK;
 
 }
@@ -1975,6 +1999,8 @@ int FloatedBigDigit32::SetDoubleFactorial(FloatedBigDigit32* V) {
     delete C;
 
     if(this->checkOver()) return floatedBigDigitERR;
+
+    if(this->isExp()) return floatedBigDigitERR;
 
     return floatedBigDigitOK;
 
@@ -2058,6 +2084,8 @@ int FloatedBigDigit32::SetSequence(FloatedBigDigit32* N,FloatedBigDigit32* K) {
     delete A;
 
     if(this->checkOver()) return floatedBigDigitERR;
+
+    if(this->isExp()) return floatedBigDigitERR;
 
     return floatedBigDigitOK;
 
@@ -2144,6 +2172,8 @@ int FloatedBigDigit32::SetCombination(FloatedBigDigit32* N,FloatedBigDigit32* K)
     delete C;
 
     if(this->checkOver()) return floatedBigDigitERR;
+
+    if(this->isExp()) return floatedBigDigitERR;
 
     return floatedBigDigitOK;
 
