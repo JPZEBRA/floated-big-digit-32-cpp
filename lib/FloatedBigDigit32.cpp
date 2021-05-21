@@ -382,7 +382,7 @@ bool FloatedBigDigit32::checkOver() {
 
     if( this->shiftPoint >=  floatedBigDigit_order / floatedBigDigit_K ) this->overflow();
   
-    if( this->shiftPoint <= -floatedBigDigit_order / floatedBigDigit_K ) this->overflow();
+    if( this->shiftPoint <= -floatedBigDigit_order / floatedBigDigit_K ) this->set(0);
 
     if( this->Val[0] >= floatedBigDigit_unit ) this->overflow();
 
