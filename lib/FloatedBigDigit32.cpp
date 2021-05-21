@@ -229,14 +229,19 @@ int FloatedBigDigit32::Set(const char* str) {
             if(rdc>='0' && rdc<='9') {
                 odn *= 10;
                 odn += ( rdc-'0');
-                if( odn >= floatedBigDigit_order ) readError = true;
+                if( odn >= floatedBigDigit_order ) break;
             } else {
                 readError = true;
             }
         } while(!readError);
 
-         if(!odm) for(int i=0;i<odn;i++) this->mul(10);
-         if( odm) for(int i=0;i<odn;i++) this->div(10);
+        if( odn >= floatedBigDigit_order ) {
+            if(!odm) this->overflow();
+            if( odm) this->set(0);
+        } else {
+            if(!odm) for(int i=0;i<odn;i++) this->mul(10);
+            if( odm) for(int i=0;i<odn;i++) this->div(10);
+        }
 
     }
 
@@ -382,7 +387,7 @@ bool FloatedBigDigit32::checkOver() {
 
     if( this->shiftPoint >=  floatedBigDigit_order / floatedBigDigit_K ) this->overflow();
   
-    if( this->shiftPoint <= -floatedBigDigit_order / floatedBigDigit_K ) this->set(0);
+    if( this->shiftPoint <  -floatedBigDigit_order / floatedBigDigit_K ) this->set(0);
 
     if( this->Val[0] >= floatedBigDigit_unit ) this->overflow();
 
