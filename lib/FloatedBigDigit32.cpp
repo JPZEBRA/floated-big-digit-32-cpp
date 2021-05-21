@@ -464,7 +464,7 @@ bool FloatedBigDigit32::isExp() {
 
     if(this->shiftPoint>=this->N) return true;
 
-    if(this->valid_size()!=this->shiftPoint+1) return true;
+    if(this->valid_size()>this->shiftPoint+1) return true;
 
     return false;
 
