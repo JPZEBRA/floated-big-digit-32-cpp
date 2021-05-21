@@ -1,7 +1,7 @@
 /* FLOATED BIG DIGIT CLASS */
 /* CREATE  2021.02.06      */
 /* REVISED 2021.05.21      */
-/* Ver 0.8.2               */
+/* Ver 0.8.3               */
 /* Original by K-ARAI      */
 
 #include <stdio.h>
@@ -3577,6 +3577,7 @@ int FloatedBigDigit32::SetAtan(FloatedBigDigit32* V) {
     bool stop = ( P->compare(floatedBigDigit_LM2)>=0 );
 
     if(stop) {
+        V->minus = rf;
         delete C;
         delete P;
         return this->SetAtan_boost(V);
