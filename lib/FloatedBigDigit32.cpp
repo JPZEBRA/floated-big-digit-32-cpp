@@ -1,7 +1,7 @@
 /* FLOATED BIG DIGIT CLASS */
 /* CREATE  2021.02.06      */
 /* REVISED 2021.05.21      */
-/* Ver 0.8.0               */
+/* Ver 0.8.1               */
 /* Original by K-ARAI      */
 
 #include <stdio.h>
@@ -3570,6 +3570,12 @@ int FloatedBigDigit32::SetAtan(FloatedBigDigit32* V) {
 
     bool stop = ( P->compare(floatedBigDigit_LM2)>=0 );
 
+    if(stop) {
+        delete C;
+        delete P;
+        return this->SetAtan_boost(V);
+    }
+
     this->set(1);
     while(P->compare(1)>=0) {
 
@@ -3606,6 +3612,36 @@ int FloatedBigDigit32::SetAtan(FloatedBigDigit32* V) {
 
 }
 
+/****************************************************************************/
+
+int FloatedBigDigit32::SetAtan_boost(FloatedBigDigit32* V) {
+
+    FloatedBigDigit32* F = new FloatedBigDigit32();
+    FloatedBigDigit32* A = new FloatedBigDigit32();
+    FloatedBigDigit32* B = new FloatedBigDigit32();
+
+    F->Copy(V);
+
+    A->Copy(V);
+    A->Mul(V);
+    A->add(1);
+
+    B->set(2);
+    A->PowerDiv(B);
+    A->add(1);
+
+    F->Div(A);
+
+    int ret = this->SetAtan(F);
+    this->mul(2);
+
+    delete F;
+    delete A;
+    delete B;
+
+    return ret;
+
+}
 
 /****************************************************************************/
 
@@ -3655,6 +3691,12 @@ int FloatedBigDigit32::SetAsin(FloatedBigDigit32* V) {
 
     bool stop = ( C->compare(floatedBigDigit_LM2)>=0 );
 
+    if(stop) {
+        delete F;
+        delete C;
+        return this->SetAsin_boost(V);
+    }
+
     this->set(1);
     while(C->compare(1)>=0) {
 
@@ -3685,6 +3727,38 @@ int FloatedBigDigit32::SetAsin(FloatedBigDigit32* V) {
     if(stop) return floatedBigDigitERR;
 
     return floatedBigDigitOK;
+
+}
+
+/****************************************************************************/
+
+int FloatedBigDigit32::SetAsin_boost(FloatedBigDigit32* V) {
+
+    FloatedBigDigit32* F = new FloatedBigDigit32();
+    FloatedBigDigit32* A = new FloatedBigDigit32();
+    FloatedBigDigit32* B = new FloatedBigDigit32();
+
+    F->Copy(V);
+
+    A->Copy(V);
+    A->Mul(V);
+    A->sub(1);
+    A->Sig();
+
+    B->set(2);
+    A->PowerDiv(B);
+    A->add(1);
+
+    F->Div(A);
+
+    int ret = this->SetAtan(F);
+    this->mul(2);
+
+    delete F;
+    delete A;
+    delete B;
+
+    return ret;
 
 }
 

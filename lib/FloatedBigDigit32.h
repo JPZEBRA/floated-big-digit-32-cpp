@@ -1,7 +1,7 @@
 /* FLOATED BIG DIGIT CLASS */
 /* CREATE  2021.02.06      */
 /* REVISED 2021.05.21      */
-/* Ver 0.8.0               */
+/* Ver 0.8.1               */
 /* Original by K-ARAI      */
 
 
@@ -67,6 +67,9 @@ class FloatedBigDigit32 {
         int SubSmall(FloatedBigDigit32* V);
         int MulSmall(FloatedBigDigit32* V);
         int DivSmall(FloatedBigDigit32* V);
+
+        int SetAtan_boost(FloatedBigDigit32* V);
+        int SetAsin_boost(FloatedBigDigit32* V);
 
         int SetAsinhR(FloatedBigDigit32* V);
 
