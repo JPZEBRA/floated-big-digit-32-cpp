@@ -1,7 +1,7 @@
 /* FLOATED BIG DIGIT CLASS */
 /* CREATE  2021.02.06      */
-/* REVISED 2021.05.21      */
-/* Ver 0.8.5               */
+/* REVISED 2021.05.22      */
+/* Ver 0.8.6               */
 /* Original by K-ARAI      */
 
 
