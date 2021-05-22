@@ -2799,6 +2799,12 @@ int FloatedBigDigit32::Power(FloatedBigDigit32* V) {
 
     FloatedBigDigit32* F = new FloatedBigDigit32();
 
+    F->Copy(V);
+
+    F->Abs();
+
+    bool conv = (F->compare(100)>0);
+
     F->set(1);
 
     if(this->isMinus()) {
@@ -2813,11 +2819,19 @@ int FloatedBigDigit32::Power(FloatedBigDigit32* V) {
 
     }
 
-    A->SetLog(this);
+    if(conv) {
 
-    A->Mul(V);
+        A->SetLog(this);
 
-    this->set(10);
+        A->Mul(V);
+
+        this->set(10);
+
+    } else {
+
+        A->Copy(V);
+
+    }
 
     int ret = this->Power_main(A,true);
 
