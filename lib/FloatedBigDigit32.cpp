@@ -2860,20 +2860,16 @@ int FloatedBigDigit32::Power_main(FloatedBigDigit32* V,bool boost) {
         R->Power(C);
 
         if(R->isOver()) {
-            delete R;
-            delete C;
-            this->overflow();
-            return floatedBigDigitERR;
+            this->set(0);
+        } else {
+            this->set(1);
+            this->Div(R);
         }
-
-        this->set(1);
-
-        int ret = this->Div(R);
 
         delete R;
         delete C;
 
-        return ret;
+        return floatedBigDigitOK;
 
     }
 
@@ -2919,13 +2915,15 @@ int FloatedBigDigit32::Power_main(FloatedBigDigit32* V,bool boost) {
         FloatedBigDigit32* A = new FloatedBigDigit32();
 
         // SMALL CHECK
-        if(boost) {
-            A->set(1);
-            A->Div(F);
-            A->FR();
-        }
+        A->set(1);
+        A->Div(F);
+        A->FR();
 
-        if( boost && !A->isSmall() && this->PowerDiv_boost(A)>1 ) {
+        if(A->isOver()) A->set(0);
+        if(A->isSmall()) A->set(0);
+        if(A->compare(100)>0) A->set(0);
+
+        if( boost && !A->isZero()) {
 
             // LOGIG FOR 1/M
             RF->Copy(this);
@@ -2971,25 +2969,25 @@ int FloatedBigDigit32::Power_main(FloatedBigDigit32* V,bool boost) {
     this->set(1);
     while(!C->isZero()) {
         this->Mul(B);
-        if(this->isOver()) {
-            delete B;
-            delete C;
-            return floatedBigDigitERR;
-        }
+        if(this->isOver()) break;
         C->sub(1);
     }
 
     if(V->isMinus()) {
-        B->Copy(this);
-        this->set(1);
-        this->Div(B);
+        if(this->isOver()) {
+            this->set(0);
+        } else {
+            B->Copy(this);
+            this->set(1);
+            this->Div(B);
+        }
     }
 
     delete B;
     delete C;
 
 
-    if(this->checkOver()) return floatedBigDigitERR;
+    if(this->isOver()) return floatedBigDigitERR;
 
     return floatedBigDigitOK;
 
