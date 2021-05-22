@@ -1,7 +1,7 @@
 /* FLOATED BIG DIGIT CLASS */
 /* CREATE  2021.02.06      */
 /* REVISED 2021.05.22      */
-/* Ver 0.9.1               */
+/* Ver 0.9.2               */
 /* Original by K-ARAI      */
 
 #include <stdio.h>
@@ -710,9 +710,6 @@ int FloatedBigDigit32::shiftSmall(int val) {
 
     if(val==0) return floatedBigDigitOK;
     if(this->isEmpty()) return floatedBigDigitOK;
-    if(this->isOver()) return floatedBigDigitERR;
-
-    bool rf = this->minus;
 
     if(val<0) {
 
@@ -1140,6 +1137,7 @@ int FloatedBigDigit32::toString(char* str,int n,bool rawdata) {
             ++ shift;
         }
         AA->FR();
+        if(AA->Val[0]>=10) AA->div(10);
     }
 
     if (AA->isMinus()) {
@@ -1464,13 +1462,13 @@ int FloatedBigDigit32::AddSmall(FloatedBigDigit32* V) {
 
     }
 
-    this->Copy(AA);
-
     if(CR>0) {
-        AA->set(CR);
-        AA->shiftPoint = this->shiftPoint + 1;
-        this->Add(AA);
+        AA->shift(-1);
+        AA->Val[0] = CR;
+        AA->shiftPoint += 1;
     }
+
+    this->Copy(AA);
 
     this->isSmall();
 

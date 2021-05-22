@@ -8,8 +8,8 @@ int main(int argc,const char **argv) {
 
     char buff[10000];
 
-    if(argc!=3) {
-        printf("USAGE: load KETA value\n");
+    if(argc!=4) {
+        printf("USAGE: add KETA val1 val2 \n");
         return 0;
     }
 
@@ -18,30 +18,27 @@ int main(int argc,const char **argv) {
     SetFloatedBigDigit32Keta((int)KETA);
 
     FloatedBigDigit32* VAL = new FloatedBigDigit32();
-  
-    VAL->Set(argv[2]);
 
+    FloatedBigDigit32* A = new FloatedBigDigit32();
+
+    FloatedBigDigit32* B = new FloatedBigDigit32();
+
+    A->Set(argv[2]);
+
+    B->Set(argv[3]);
+
+    VAL->Copy(A);
+
+    VAL->Add(B);
+ 
     VAL->toString(buff,10000);
 
     printf("%s\n",buff);
-
-    VAL->toString(buff,10000,false);
-
-    printf("%s\n",buff);
-
-    VAL->toString2(buff,50);
-
-    printf("%s\n",buff);
   
-    VAL->toString2(buff,50,6);
-
-    printf("%s\n",buff);
-
-    double val = VAL->toDouble();
-
-    printf("%f\n",val);
   
     delete VAL;
+    delete A;
+    delete B;
 
     FreeFloatedBigDigit32();
 
