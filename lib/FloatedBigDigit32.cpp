@@ -1,7 +1,7 @@
 /* FLOATED BIG DIGIT CLASS */
 /* CREATE  2021.02.06      */
 /* REVISED 2021.05.22      */
-/* Ver 0.8.8               */
+/* Ver 0.9.0               */
 /* Original by K-ARAI      */
 
 #include <stdio.h>
@@ -1139,6 +1139,7 @@ int FloatedBigDigit32::toString(char* str,int n,bool rawdata) {
             AA->div(10);
             ++ shift;
         }
+        AA->FR();
     }
 
     if (AA->isMinus()) {
@@ -1245,11 +1246,35 @@ int FloatedBigDigit32::footString(char* str,int n) {
 
 int FloatedBigDigit32::toString2(char* str,int keta,int small) {
 
+    if(keta<0) keta = 0;
+
+    if(small<0) small = 0;
+
     if(keta>0) str[0] = '\0';
 
     if(this->isOver()) {
         return floatedBigDigitERR;
     }
+
+    FloatedBigDigit32* AA = new FloatedBigDigit32();
+
+    FloatedBigDigit32* BB = new FloatedBigDigit32();
+
+    AA->Copy(this);
+
+    BB->set(5);
+
+    for(int i=0;i<=small;i++) BB->div(10);
+
+    bool rf = AA->minus;
+
+    AA->minus = false;
+
+    AA->Add(BB);
+
+    AA->minus = rf;
+
+    delete BB;
 
     int ptr;
 
@@ -1262,7 +1287,7 @@ int FloatedBigDigit32::toString2(char* str,int keta,int small) {
     str[len] = '\0';
     if (small>0) str[keta] = '.';
 
-    if(this->isMinus()) {
+    if(AA->isMinus()) {
         str[0] = '-';
     } else {
         str[0] = '+';
@@ -1270,21 +1295,23 @@ int FloatedBigDigit32::toString2(char* str,int keta,int small) {
 
     ptr = keta - 1;
 
-    if(this->isOver()){
+    if(AA->isOver()){
         memset(str,'*',len);
-       if (small>0) str[keta] = '.';
+        if (small>0) str[keta] = '.';
+        delete AA;
         return floatedBigDigitERR;
     }
 
-    for(int i=this->zero_pos();i>=0;i--) {
+    for(int i=AA->zero_pos();i>=0;i--) {
 
-        int val = this->digit(i);
+        int val = AA->digit(i);
 
         for(int j=0;j<5;j++) {
             if(ptr<1) {
                 if(val>0) {
                     memset(str,'*',len);
                     if (small>0) str[keta] = '.';
+                    delete AA;
                     return floatedBigDigitERR;
                 }
             } else {
@@ -1298,9 +1325,9 @@ int FloatedBigDigit32::toString2(char* str,int keta,int small) {
 
     for( int i=1;i<=(small-1)/5+1;i++) {
 
-        int val = this->digit(this->zero_pos()+i);
+        int val = AA->digit(this->zero_pos()+i);
 
-        ptr = keta + 1 + i*5;
+        ptr = keta + i*5;
 
         for(int j=0;j<5;j++) {
             if(ptr<len) {
@@ -1312,6 +1339,8 @@ int FloatedBigDigit32::toString2(char* str,int keta,int small) {
         }
 
     }
+
+    delete AA;
 
     return floatedBigDigitOK;
 
