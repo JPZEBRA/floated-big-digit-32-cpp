@@ -16,7 +16,7 @@
 
 int floatedBigDigit_K     = 5;
 int floatedBigDigit_unit  = 100000;
-int floatedBigDigit_order = 10000;
+int floatedBigDigit_order = 90000;
 
 int floatedBigDigit_F     = 2;
 int floatedBigDigit_LMT = 12000;
