@@ -3075,38 +3075,28 @@ int FloatedBigDigit32::PowerDiv(FloatedBigDigit32* V) {
 int FloatedBigDigit32::PowerDiv_boost(FloatedBigDigit32* V) {
 
 
-    if(!this->isSmall() && !this->isSeed()) return -1;
+    if(this->isSmall()) return -1;
 
     FloatedBigDigit32* R = new FloatedBigDigit32();
     FloatedBigDigit32* F = new FloatedBigDigit32();
     FloatedBigDigit32* I = new FloatedBigDigit32();
 
-    // 316^2 < 1000000
-    int bst_max = 316;
+    I->set(2);
 
-    I->Copy(this);
-    I->div(2);
-    I->Fix();
+    int ret = -1;
 
-    if(I->compare(bst_max)>0) I->set(bst_max);
-    
-    while (I->compare(1)>0) {
+    do {
         R->Copy(I);
         R->Power(V);
-        if(this->Compare(R)>=0) {
-            R->Copy(this);
-            F->Copy(V);
-            while(F->compare(0)>0) {
-                R->Div(I);
-                F->sub(1);
-            }
-            R->FR();
-            if(!R->isZero() && !R->isSmall()) break;
+        if(this->Compare(R)<0) break;
+        F->Copy(this);
+        F->Div(R);
+        if(!F->isSmall()) {
+            ret = I->Val[0];
+            break;
         }
-        I->sub(1);
-    }
-
-    int ret = I->Val[0];
+        I->add(1);
+    } while(I->compare(10000)<0);
 
     delete R;
     delete F;
