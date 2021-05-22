@@ -2803,7 +2803,7 @@ int FloatedBigDigit32::Power(FloatedBigDigit32* V) {
 
     F->Abs();
 
-    bool conv = (F->compare(100)>0);
+    bool conv = ( this->isSmall() || F->compare(1000)>0 );
 
     F->set(1);
 
