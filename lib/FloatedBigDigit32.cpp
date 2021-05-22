@@ -1,7 +1,7 @@
 /* FLOATED BIG DIGIT CLASS */
 /* CREATE  2021.02.06      */
 /* REVISED 2021.05.22      */
-/* Ver 0.8.7               */
+/* Ver 0.8.8               */
 /* Original by K-ARAI      */
 
 #include <stdio.h>
@@ -556,7 +556,7 @@ int FloatedBigDigit32::FR() {
 
     for(int i = this->N+1;i>=0;i--) {
         int v = this->Val[i] + CR;
-        int CR = (v/floatedBigDigit_unit);
+        CR = (v/floatedBigDigit_unit);
         this->Val[i] = v % floatedBigDigit_unit;
     }
 
