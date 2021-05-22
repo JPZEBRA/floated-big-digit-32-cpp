@@ -3096,7 +3096,7 @@ int FloatedBigDigit32::PowerDiv_boost(FloatedBigDigit32* V) {
             break;
         }
         I->add(1);
-    } while(I->compare(10000)<0);
+    } while(I->compare(100)<0);
 
     delete R;
     delete F;
