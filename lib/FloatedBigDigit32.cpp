@@ -2790,7 +2790,28 @@ int FloatedBigDigit32::Power(FloatedBigDigit32* V) {
         return floatedBigDigitERR;
     }
 
+    if(this->isMinus() && V->isSmall()) {
+        this->overflow();
+        return floatedBigDigitERR;
+    } 
+
     FloatedBigDigit32* A = new FloatedBigDigit32();
+
+    FloatedBigDigit32* F = new FloatedBigDigit32();
+
+    F->set(1);
+
+    if(this->isMinus()) {
+
+        this->Sig();
+
+        A->Copy(V);
+        A->Abs();
+        A->mod(2);
+
+        if(A->compare(0)>0) F->Sig();
+
+    }
 
     A->SetLog(this);
 
@@ -2798,9 +2819,13 @@ int FloatedBigDigit32::Power(FloatedBigDigit32* V) {
 
     this->set(10);
 
-    bool ret = this->Power_main(A,true);
+    int ret = this->Power_main(A,true);
+
+    this->Mul(F);
 
     delete A;
+
+    delete F;
 
     return ret;
 
