@@ -1,7 +1,7 @@
 /* FLOATED BIG DIGIT CLASS */
 /* CREATE  2021.02.06      */
 /* REVISED 2021.05.22      */
-/* Ver 0.9.2               */
+/* Ver 0.9.3               */
 /* Original by K-ARAI      */
 
 #include <stdio.h>
@@ -2790,7 +2790,19 @@ int FloatedBigDigit32::Power(FloatedBigDigit32* V) {
         return floatedBigDigitERR;
     }
 
-    return this->Power_main(V,true);
+    FloatedBigDigit32* A = new FloatedBigDigit32();
+
+    A->SetLog(this);
+
+    A->Mul(V);
+
+    this->set(10);
+
+    bool ret = this->Power_main(A,true);
+
+    delete A;
+
+    return ret;
 
 }
 
