@@ -1,7 +1,7 @@
 /* FLOATED BIG DIGIT CLASS */
 /* CREATE  2021.02.06      */
 /* REVISED 2021.05.22      */
-/* Ver 0.9.0               */
+/* Ver 0.9.1               */
 /* Original by K-ARAI      */
 
 #include <stdio.h>
@@ -1857,7 +1857,11 @@ int FloatedBigDigit32::Mod(FloatedBigDigit32* V) {
         return floatedBigDigitERR;
     }
 
+    FloatedBigDigit32* AA = new FloatedBigDigit32();
+
     FloatedBigDigit32* BB = new FloatedBigDigit32();
+
+    AA->Copy(this);
 
     BB->Copy(this);
 
@@ -1867,11 +1871,23 @@ int FloatedBigDigit32::Mod(FloatedBigDigit32* V) {
 
     BB->Mul(V);
 
-    this->Sub(BB);
+    AA->Sub(BB);
+
+    this->Copy(AA);
+
+    AA->Abs();
+
+    BB->Copy(V);
+
+    BB->Abs();
+
+    if(AA->Compare(BB)>=0) this->overflow();
+
+    delete AA;
 
     delete BB;
 
-    this->isSmall();
+    if(this->isOver()) return floatedBigDigitERR;
 
     return floatedBigDigitOK;
 
