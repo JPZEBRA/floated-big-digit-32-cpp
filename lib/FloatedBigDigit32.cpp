@@ -3106,6 +3106,36 @@ int FloatedBigDigit32::PowerDiv_boost(FloatedBigDigit32* V) {
 
 }
 
+/****************************************************************************/
+
+int FloatedBigDigit32::Sqrt() {
+
+    if(this->isOver()) {
+        this->overflow();
+        return floatedBigDigitERR;
+    }
+
+    if(this->isZero()) {
+        this->clear();
+        return floatedBigDigitOK;
+    }
+
+    if(this->isMinus()) {
+        this->overflow();
+        return floatedBigDigitERR;
+    }
+
+    FloatedBigDigit32* F = new FloatedBigDigit32();
+
+    F->set(2);
+
+    int ret = this->PowerDiv(F);
+
+    delete F;
+
+    return ret;
+
+} 
 
 /****************************************************************************/
 /****************************************************************************/

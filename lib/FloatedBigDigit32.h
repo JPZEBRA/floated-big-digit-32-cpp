@@ -197,6 +197,8 @@ class FloatedBigDigit32 {
 
         int PowerDiv(FloatedBigDigit32* V);
 
+        int Sqrt();
+
     /****************************************************************************/
 
         int SetSin(FloatedBigDigit32* V);
