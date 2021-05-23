@@ -1,7 +1,7 @@
 /* FLOATED BIG DIGIT CLASS */
 /* CREATE  2021.02.06      */
 /* REVISED 2021.05.22      */
-/* Ver 0.9.3               */
+/* Ver 0.9.4               */
 /* Original by K-ARAI      */
 
 #include <stdio.h>
@@ -273,12 +273,17 @@ bool FloatedBigDigit32::lastBit() {
     bool rf = this->minus;
     this->minus = false;
 
-    if( floatedBigDigitCashedLB && floatedBigDigitCashedLB_L != last_bit_boost) {
+    if( floatedBigDigitCashedLB && floatedBigDigitCashLB->N != this->N ) {
         delete floatedBigDigitCashLB;
         floatedBigDigitCashedLB = false;
     }
 
-    if(!floatedBigDigitCashedLB) {
+    if( floatedBigDigitCashedLB && floatedBigDigitCashedLB_L != last_bit_boost ) {
+        delete floatedBigDigitCashLB;
+        floatedBigDigitCashedLB = false;
+    }
+
+    if(!floatedBigDigitCashedLB ) {
         floatedBigDigitCashLB  = new FloatedBigDigit32();
         floatedBigDigitCashedLB = true;
         floatedBigDigitCashedLB_L = last_bit_boost;
