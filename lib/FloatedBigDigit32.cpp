@@ -1,6 +1,6 @@
 /* FLOATED BIG DIGIT CLASS */
 /* CREATE  2021.02.06      */
-/* REVISED 2021.05.22      */
+/* REVISED 2021.05.23      */
 /* Ver 0.9.4               */
 /* Original by K-ARAI      */
 
@@ -1089,9 +1089,20 @@ int FloatedBigDigit32::Compare(FloatedBigDigit32* V) {
 
     int sf = V->shiftPoint - this->shiftPoint;
 
+    int max1 = V->shiftPoint;
+    int min1 = max1 - (V->N+floatedBigDigit_F);
+
+    int max2 = this->shiftPoint;
+    int min2 = max2 - (this->N+floatedBigDigit_F);
+
+    int max = ( max1 >= max2 ) ? max1 : max2;
+    int min = ( min1 <= min2 ) ? min1 : min2;
+
+    int width = max - min;
+
     if( sf >= 0 ) {
 
-        for(int i = 0;i<=this->N+floatedBigDigit_F;i++) {
+        for(int i = 0;i<=width;i++) {
 
             if(this->digit(i-sf)>V->digit(i)) return GT*RV;
             if(this->digit(i-sf)<V->digit(i)) return LT*RV;
@@ -1100,7 +1111,7 @@ int FloatedBigDigit32::Compare(FloatedBigDigit32* V) {
 
     } else {
 
-        for(int i = 0;i<=this->N+floatedBigDigit_F;i++) {
+        for(int i = 0;i<=width;i++) {
 
             if(this->digit(i)>V->digit(i+sf)) return GT*RV;
             if(this->digit(i)<V->digit(i+sf)) return LT*RV;
