@@ -303,9 +303,7 @@ bool FloatedBigDigit32::lastBit() {
 
 int FloatedBigDigit32::Copy(FloatedBigDigit32* V) {
 
-    if( this->N != V->N ) return floatedBigDigitERR;
-
-    for(int i=0;i<=this->N+floatedBigDigit_F;i++) this->Val[i] = V->Val[i];
+    for(int i=0;i<=this->N+floatedBigDigit_F;i++) this->Val[i] = ( i<=V->N+floatedBigDigit_F ) ? V->Val[i] : 0;
 
     this->shiftPoint = V->shiftPoint;
 
