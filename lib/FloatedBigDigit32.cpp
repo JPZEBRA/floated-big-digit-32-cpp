@@ -1431,6 +1431,8 @@ int FloatedBigDigit32::LoadString(const char* str) {
 
     }
 
+    this->shiftPoint = 0;
+
     if(!readError && c == 'E' ) {
 
         ptr++;
