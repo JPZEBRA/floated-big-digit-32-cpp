@@ -1459,11 +1459,11 @@ int FloatedBigDigit32::LoadString(const char* str) {
 
         if(!readError) {
             if(om) ord = - ord;
-            int sf = ord / 5;
-            ord = ord % 5;
+            int sf = ord / floatedBigDigit_K;
+            ord = ord % floatedBigDigit_K;
             if(ord<0) {
-              ++sf;
-              ord += 5;
+              --sf;
+              ord += floatedBigDigit_K;
             }
             for(int i=0;i<ord;i++) this->mul(10);
             this->shiftPoint = sf;
