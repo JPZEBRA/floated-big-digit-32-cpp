@@ -55,17 +55,22 @@ int main(int argc,const char **argv) {
     printf("%s\n",buff);
 
 
-    VAL->toSeparate(buff,50,5);
+    VAL->toSeparate(buff,5,20);
 
     printf("%s\n",buff);
 
 
-    VAL->toSeparate(buff,50,4);
+    VAL->toSeparate(buff,4,20);
 
     printf("%s\n",buff);
 
 
-    VAL->toSeparate(buff,50,3);
+    VAL->toSeparate(buff,3,20);
+
+    printf("%s\n",buff);
+
+
+    VAL->toSeparate(buff,3,20,9);
 
     printf("%s\n",buff);
 
