@@ -142,6 +142,7 @@ class FloatedBigDigit32 {
         int toString(char* str,int n,bool rawdata = true);
         int footString(char* str,int n);
         int toString2(char* str,int keta,int small = 0);
+        int toSeparate(char* str,int keta,int col);
 
         double toDouble();
 

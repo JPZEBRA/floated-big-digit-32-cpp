@@ -31,7 +31,7 @@ int main(int argc,const char **argv) {
 
     COPY->toString(buff,10000);
 
-    printf("%s\n",buff);
+//    printf("%s\n",buff);
 
 
     VAL->toString(buff,10000,false);
@@ -42,7 +42,7 @@ int main(int argc,const char **argv) {
 
     COPY->toString(buff,10000);
 
-    printf("%s\n",buff);
+//    printf("%s\n",buff);
 
 
     VAL->toString2(buff,50);
@@ -55,9 +55,26 @@ int main(int argc,const char **argv) {
     printf("%s\n",buff);
 
 
+    VAL->toSeparate(buff,50,5);
+
+    printf("%s\n",buff);
+
+
+    VAL->toSeparate(buff,50,4);
+
+    printf("%s\n",buff);
+
+
+    VAL->toSeparate(buff,50,3);
+
+    printf("%s\n",buff);
+
+
     double val = VAL->toDouble();
 
-    printf("%lf\n",val);
+    printf("\ndouble:%f\n",val);
+
+
   
     delete VAL;
 

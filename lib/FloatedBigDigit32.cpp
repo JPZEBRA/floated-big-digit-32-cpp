@@ -1327,7 +1327,7 @@ int FloatedBigDigit32::toString2(char* str,int keta,int small) {
 
         int val = AA->digit(i);
 
-        for(int j=0;j<5;j++) {
+        for(int j=0;j<floatedBigDigit_K;j++) {
             if(ptr<1) {
                 if(val>0) {
                     memset(str,'*',len);
@@ -1357,6 +1357,72 @@ int FloatedBigDigit32::toString2(char* str,int keta,int small) {
              }
              ptr--;
              val /= 10;
+        }
+
+    }
+
+    delete AA;
+
+    return floatedBigDigitOK;
+
+}
+
+/****************************************************************************/
+
+int FloatedBigDigit32::toSeparate(char* str,int keta,int col) {
+
+    if(keta<0) keta = 0;
+
+    if(col<0) col = 1;
+
+    if(keta>0) str[0] = '\0';
+
+    if(this->isOver()) {
+        return floatedBigDigitERR;
+    }
+
+    FloatedBigDigit32* AA = new FloatedBigDigit32();
+
+    AA->Copy(this);
+
+    AA->Int();
+
+    memset(str,' ',keta);
+    str[keta] = '\0';
+
+    if(AA->isMinus()) {
+        str[0] = '-';
+    } else {
+        str[0] = '+';
+    }
+
+    int ptr = keta - 1;
+    int n = 0;
+
+    for(int i=AA->zero_pos();i>=0;i--) {
+
+        int val = AA->digit(i);
+
+        for(int j=0;j<floatedBigDigit_K;j++) {
+
+            if(i==0 && val == 0) break;
+
+            if(ptr<1) {
+                if(val>0) {
+                    memset(str,' ',keta);
+                    delete AA;
+                    return floatedBigDigitERR;
+                }
+            } else {
+                char p = '0' + ( val % 10 );
+                str[ptr--] = p;
+                val /= 10;
+                ++n;
+                if(n==col) {
+                    if(ptr>1) str[ptr--] = ' ';
+                    n = 0;
+                }
+            }
         }
 
     }
