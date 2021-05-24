@@ -19,11 +19,14 @@ int floatedBigDigit_unit  = 100000;
 int floatedBigDigit_order = 90000;
 
 int floatedBigDigit_F     = 2;
-int floatedBigDigit_LMT = 12000;
-int floatedBigDigit_LM2 = 30000;
-int floatedBigDigit_LMX = 99990;
-int floatedBigDigit_LST = 5;
-int floatedBigDigit_LSX = 7;
+int floatedBigDigit_sub   = 1000;
+
+int floatedBigDigit_LMT   = 12000;
+int floatedBigDigit_LM2   = 30000;
+int floatedBigDigit_LMX   = 99990;
+
+int floatedBigDigit_LST   = 5;
+int floatedBigDigit_LSX   = 7;
 
 /****************************************************************************/
 
@@ -825,21 +828,21 @@ int FloatedBigDigit32::mulSmall(int val) {
         // low bit size multiple !
 
         int v = this->Val[i];
-        int vh = v / 1000;
-        int vl = v % 1000;
+        int vh = v / floatedBigDigit_sub;
+        int vl = v % floatedBigDigit_sub;
 
         vh *= val;
         vl *= val;
 
         vl += CR;
 
-        vh += vl/1000;
-        vl = vl % 1000;
+        vh += vl / floatedBigDigit_sub;
+        vl = vl % floatedBigDigit_sub;
 
-        CR = vh / 100;
-        vh = vh % 100;
+        CR = vh / ( floatedBigDigit_unit / floatedBigDigit_sub );
+        vh = vh % ( floatedBigDigit_unit / floatedBigDigit_sub );
 
-        this->Val[i] = vh*1000 + vl;
+        this->Val[i] = vh*floatedBigDigit_sub + vl;
 
     }
 
@@ -913,20 +916,20 @@ int FloatedBigDigit32::divSmall(int val) {
         // low bit size division !
 
         int v = this->Val[i];
-        int vh = v / 1000;
-        int vl = v % 1000;
+        int vh = v / floatedBigDigit_sub;
+        int vl = v % floatedBigDigit_sub;
 
-        vh += CR*(floatedBigDigit_unit/1000);
+        vh += CR * ( floatedBigDigit_unit / floatedBigDigit_sub );
 
         int ch = vh % val;
         vh = vh / val;
 
-        vl += ch*1000;
+        vl += ch * floatedBigDigit_sub;
 
         int cl = vl % val;
         vl = vl / val;
 
-        this->Val[i] = vh*1000 + vl;
+        this->Val[i] = vh*floatedBigDigit_sub + vl;
 
         CR = cl;
 
