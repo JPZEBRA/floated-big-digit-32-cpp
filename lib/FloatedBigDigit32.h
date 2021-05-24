@@ -145,6 +145,8 @@ class FloatedBigDigit32 {
 
         double toDouble();
 
+        int LoadString(const char* str);
+
     /****************************************************************************/
 
         int mod(int val);

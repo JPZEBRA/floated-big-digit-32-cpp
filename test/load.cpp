@@ -18,6 +18,8 @@ int main(int argc,const char **argv) {
     SetFloatedBigDigit32Keta((int)KETA);
 
     FloatedBigDigit32* VAL = new FloatedBigDigit32();
+
+    FloatedBigDigit32* COPY = new FloatedBigDigit32();
   
     VAL->Set(argv[2]);
 
@@ -25,23 +27,41 @@ int main(int argc,const char **argv) {
 
     printf("%s\n",buff);
 
+    COPY->LoadString(buff);
+
+    COPY->toString(buff,10000);
+
+    printf("%s\n",buff);
+
+
     VAL->toString(buff,10000,false);
 
     printf("%s\n",buff);
 
+    COPY->LoadString(buff);
+
+    COPY->toString(buff,10000);
+
+    printf("%s\n",buff);
+
+
     VAL->toString2(buff,50);
 
     printf("%s\n",buff);
+
   
-    VAL->toString2(buff,50,6);
+    VAL->toString2(buff,50,10);
 
     printf("%s\n",buff);
 
+
     double val = VAL->toDouble();
 
-    printf("%f\n",val);
+    printf("%lf\n",val);
   
     delete VAL;
+
+    delete COPY;
 
     FreeFloatedBigDigit32();
 

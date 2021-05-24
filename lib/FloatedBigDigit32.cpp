@@ -1366,6 +1366,124 @@ int FloatedBigDigit32::toString2(char* str,int keta,int small) {
 
 /****************************************************************************/
 
+int FloatedBigDigit32::LoadString(const char* str) {
+
+    int ptr = 0;
+
+    char c;
+
+    int val;
+    int ord;
+
+    bool vm = false;
+    bool om = false;
+
+    bool readError = false;
+
+    this->set(0);
+
+    c = str[ptr];
+
+    if       (c=='+') {
+        vm = false;
+        ptr++;
+    } else if(c=='-') {
+        vm = true;
+        ptr++;
+    } else {
+        readError = true;
+    }
+
+    while(!readError) {
+
+        c = str[ptr];
+        if( c == '\n') break;
+        if( c == 'E') break;
+
+        val = 0;
+
+        for(int i=0;i<floatedBigDigit_K;i++) {
+            c = str[ptr];
+            if( c >= '0' && c <= '9') {
+                val *= 10;
+                val += ( c - '0' );
+                ptr++;
+            } else {
+                readError = true;
+                break;
+            }
+        }
+
+        c = str[ptr];
+        if( c == ' ' || c == '.' ) {
+            ptr++;
+        } else {
+            readError = true;
+        }
+
+        if(!readError) {
+            for(int i=0;i<5;i++) this->mul(10);
+            this->add(val);
+        }
+
+    }
+
+    if(!readError && c == 'E' ) {
+
+        ptr++;
+        c = str[ptr];
+
+        if       (c=='+') {
+            om = false;
+            ptr++;
+        } else if(c=='-') {
+            om = true;
+            ptr++;
+        } else {
+            readError = true;
+        }
+
+        ord = 0;
+
+        for(int i=0;i<5;i++) {
+            c = str[ptr];
+            if( c >= '0' && c <= '9') {
+                ord *= 10;
+                ord += ( c - '0' );
+                ptr++;
+            } else {
+                readError = true;
+                break;
+            }
+        }
+
+        if(!readError) {
+            if(om) ord = - ord;
+            int sf = ord / 5;
+            ord = ord % 5;
+            if(ord<0) {
+              ++sf;
+              ord += 5;
+            }
+            for(int i=0;i<ord;i++) this->mul(10);
+            this->shiftPoint = sf;
+        }
+
+    }
+
+    if(readError) {
+        this->overflow();
+        return floatedBigDigitERR;
+    }
+
+    this->minus = vm;
+
+    return floatedBigDigitOK;
+            
+}
+
+/****************************************************************************/
+
 double FloatedBigDigit32::toDouble() {
 
     double ret = 0.0;
