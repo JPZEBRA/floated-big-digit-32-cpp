@@ -4077,7 +4077,7 @@ int FloatedBigDigit32::SetAsin_boost(FloatedBigDigit32* V) {
 
     F->Div(A);
 
-    int ret = this->SetAtan(F);
+    int ret = this->SetAtan_boost(F);
     this->mul(2);
 
     delete F;
