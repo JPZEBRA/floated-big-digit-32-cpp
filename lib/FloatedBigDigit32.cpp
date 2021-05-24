@@ -1,7 +1,7 @@
 /* FLOATED BIG DIGIT CLASS */
 /* CREATE  2021.02.06      */
-/* REVISED 2021.05.23      */
-/* Ver 0.9.4               */
+/* REVISED 2021.05.24      */
+/* Ver 0.9.5               */
 /* Original by K-ARAI      */
 
 #include <stdio.h>
@@ -1086,6 +1086,12 @@ int FloatedBigDigit32::Compare(FloatedBigDigit32* V) {
     if( this->isMinus() && !V->isMinus()) return LT;
     if(!this->isMinus() &&  V->isMinus()) return GT;
     if( this->isMinus() &&  V->isMinus()) RV = -1;
+
+    if( this->isZero()){
+        if( V->isZero() ) return EQ;
+        if(!V->isMinus()) return LT;
+        if( V->isMinus()) return GT;
+    }
 
     int sf = V->shiftPoint - this->shiftPoint;
 
