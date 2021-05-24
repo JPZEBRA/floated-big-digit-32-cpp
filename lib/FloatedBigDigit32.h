@@ -42,9 +42,6 @@ class FloatedBigDigit32 {
 
         bool minus;
 
-        int set_mem();
-
-
     /****************************************************************************/
 
     protected :
