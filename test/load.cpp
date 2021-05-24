@@ -23,7 +23,12 @@ int main(int argc,const char **argv) {
   
     VAL->Set(argv[2]);
 
+
+
+
     VAL->toString(buff,10000);
+
+    printf("[RAW DATA]\n");
 
     printf("%s\n",buff);
 
@@ -31,53 +36,69 @@ int main(int argc,const char **argv) {
 
     COPY->toString(buff,10000);
 
-//    printf("%s\n",buff);
+    printf("[COPY]\n");
+
+    printf("%s\n",buff);
+
+
 
 
     VAL->toString(buff,10000,false);
 
+    printf("[SHIFT DATA]\n");
+
     printf("%s\n",buff);
 
     COPY->LoadString(buff);
 
     COPY->toString(buff,10000);
 
-//    printf("%s\n",buff);
+    printf("[COPY]\n");
 
+    printf("%s\n",buff);
+
+
+
+
+    printf("[TOSTRING 2]\n");
 
     VAL->toString2(buff,50);
 
     printf("%s\n",buff);
 
-  
     VAL->toString2(buff,50,10);
 
     printf("%s\n",buff);
 
 
+
+
+    printf("[SEPARATE]\n");
+
     VAL->toSeparate(buff,5,20);
 
     printf("%s\n",buff);
 
+    VAL->toSeparate(buff,4,16);
 
-    VAL->toSeparate(buff,4,20);
+    printf("%s\n",buff);
+
+    VAL->toSeparate(buff,3,12);
+
+    printf("%s\n",buff);
+
+    VAL->toSeparate(buff,3,12,9);
 
     printf("%s\n",buff);
 
 
-    VAL->toSeparate(buff,3,20);
-
-    printf("%s\n",buff);
 
 
-    VAL->toSeparate(buff,3,20,9);
-
-    printf("%s\n",buff);
-
+    printf("[DOUBLE]\n");
 
     double val = VAL->toDouble();
 
-    printf("\ndouble:%f\n",val);
+    printf("%f\n",val);
 
 
   
