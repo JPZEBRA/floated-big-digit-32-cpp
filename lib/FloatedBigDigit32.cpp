@@ -4075,14 +4075,14 @@ int FloatedBigDigit32::SetAtan_boost(FloatedBigDigit32* V) {
 
     F->Div(A);
 
-    this->SetAtan(F);
+    int ret = this->SetAtan(F);
     this->mul(2);
 
     delete F;
     delete A;
     delete B;
 
-    return floatedBigDigitERR;
+    return ret;
 
 }
 
