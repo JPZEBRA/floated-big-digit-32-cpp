@@ -1,7 +1,7 @@
 /* FLOATED BIG DIGIT CLASS */
 /* CREATE  2021.02.06      */
-/* REVISED 2021.05.24      */
-/* Ver 0.9.5               */
+/* REVISED 2021.05.26      */
+/* Ver 0.9.6               */
 /* Original by K-ARAI      */
 
 #include <stdio.h>
@@ -2540,8 +2540,6 @@ int FloatedBigDigit32::SetE() {
     C->set(1);
     this->set(1);
 
-    int i=0;
-
     do{
         this->Div(C);
         C->add(1);
@@ -2566,8 +2564,6 @@ int FloatedBigDigit32::SetE() {
     floatedBigDigitCashE->Copy(this);
     floatedBigDigitCashedE = true;
     floatedBigDigitCashedE_R = (stop ? floatedBigDigitERR : floatedBigDigitOK );
-
-    return i;
 
     if(stop) return floatedBigDigitERR;
 
@@ -3674,8 +3670,7 @@ int FloatedBigDigit32::SetSinh(FloatedBigDigit32* V) {
     bool rf = F->isMinus();
     F->minus = false;
 
-    this->Copy(F);
-
+    this->set(1);
     C->set(1);
     do{
         this->Mul(F);
@@ -3783,9 +3778,7 @@ int FloatedBigDigit32::SetCosh(FloatedBigDigit32* V) {
 
     FloatedBigDigit32* C = new FloatedBigDigit32();
 
-    this->Copy(V);
-    this->minus = false;
-
+    this->set(1);
     C->set(0);
     do{
         this->Mul(V);
@@ -4012,7 +4005,7 @@ int FloatedBigDigit32::SetAtan(FloatedBigDigit32* V) {
     V->minus = false;
 
     P->set(0);
-    C->Copy(V);
+    C->set(1);
     do {
         C->Mul(V);        
         C->Mul(V);
@@ -4058,8 +4051,6 @@ int FloatedBigDigit32::SetAtan(FloatedBigDigit32* V) {
     delete C;
     delete P;
 
-    if(stop) return floatedBigDigitERR;
-
     return floatedBigDigitOK;
 
 }
@@ -4084,14 +4075,14 @@ int FloatedBigDigit32::SetAtan_boost(FloatedBigDigit32* V) {
 
     F->Div(A);
 
-    int ret = this->SetAtan(F);
+    this->SetAtan(F);
     this->mul(2);
 
     delete F;
     delete A;
     delete B;
 
-    return ret;
+    return floatedBigDigitERR;
 
 }
 
@@ -4130,7 +4121,7 @@ int FloatedBigDigit32::SetAsin(FloatedBigDigit32* V) {
 
     C->set(1);
 
-    this->Copy(F);
+    this->set(1);
     while(C->compare(floatedBigDigit_LM2) < 0 && !this->lastBit()) {
         this->Mul(F);
         this->Mul(F);
@@ -4176,8 +4167,6 @@ int FloatedBigDigit32::SetAsin(FloatedBigDigit32* V) {
     delete F;
     delete C;
 
-    if(stop) return floatedBigDigitERR;
-
     return floatedBigDigitOK;
 
 }
@@ -4203,14 +4192,14 @@ int FloatedBigDigit32::SetAsin_boost(FloatedBigDigit32* V) {
 
     F->Div(A);
 
-    int ret = this->SetAtan_boost(F);
+    this->SetAtan_boost(F);
     this->mul(2);
 
     delete F;
     delete A;
     delete B;
 
-    return ret;
+    return floatedBigDigitERR;
 
 }
 
@@ -4291,6 +4280,7 @@ int FloatedBigDigit32::SetAsinh(FloatedBigDigit32* V) {
     bool rf = V->minus;
     V->minus = false;
 
+    this->set(1);
     do{
 
         this->Mul(V);
@@ -4661,7 +4651,7 @@ int FloatedBigDigit32::SetAtanh(FloatedBigDigit32* V) {
     FloatedBigDigit32* C = new FloatedBigDigit32();
 
     C->set(1);
-
+    this->set(1);
     do{
         this->Mul(V);
         this->Mul(V);
