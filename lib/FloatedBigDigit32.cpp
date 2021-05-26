@@ -1,6 +1,6 @@
 /* FLOATED BIG DIGIT CLASS */
 /* CREATE  2021.02.06      */
-/* REVISED 2021.05.26      */
+/* REVISED 2021.05.27      */
 /* Ver 0.9.6               */
 /* Original by K-ARAI      */
 
@@ -4178,28 +4178,38 @@ int FloatedBigDigit32::SetAsin_boost(FloatedBigDigit32* V) {
     FloatedBigDigit32* F = new FloatedBigDigit32();
     FloatedBigDigit32* A = new FloatedBigDigit32();
     FloatedBigDigit32* B = new FloatedBigDigit32();
+    FloatedBigDigit32* C = new FloatedBigDigit32();
+
+    bool rf = V->minus;
 
     F->Copy(V);
+    F->Abs();
 
-    A->Copy(V);
-    A->Mul(V);
-    A->sub(1);
-    A->Sig();
+    A->set(1);
+    A->Sub(F);
 
-    B->set(2);
-    A->PowerDiv(B);
-    A->add(1);
+    B->set(1);
+    B->Add(F);
 
-    F->Div(A);
+    C->set(2);
+    A->PowerDiv(C);
+    B->PowerDiv(C);
 
-    this->SetAtan_boost(F);
-    this->mul(2);
+    A->Mul(B);
+    int ret = C->SetAsin(A);
+
+    this->SetPI();
+    this->div(2);
+    this->Sub(C);
+
+    this->minus = rf;
 
     delete F;
     delete A;
     delete B;
+    delete C;
 
-    return floatedBigDigitERR;
+    return ret;
 
 }
 
