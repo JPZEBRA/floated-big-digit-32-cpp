@@ -1,7 +1,7 @@
 /* FLOATED BIG DIGIT CLASS */
 /* CREATE  2021.02.06      */
-/* REVISED 2021.05.27      */
-/* Ver 0.9.6               */
+/* REVISED 2022.01.13      */
+/* Ver 0.9.7               */
 /* Original by K-ARAI      */
 
 #include <stdio.h>
@@ -316,6 +316,23 @@ int FloatedBigDigit32::Copy(FloatedBigDigit32* V) {
     return floatedBigDigitOK;
 
 }   
+
+/****************************************************************************/
+
+int FloatedBigDigit32::SetFull() {
+
+    this->clear();
+
+    for(int i=0;i<this->N;i++) this->Val[i] = floatedBigDigit_unit - 1;
+
+    this->shiftPoint = this->N - 1;
+
+    return floatedBigDigitOK;
+
+}   
+
+
+/****************************************************************************/
 
 /****************************************************************************/
 

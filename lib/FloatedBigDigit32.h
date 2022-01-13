@@ -1,7 +1,7 @@
 /* FLOATED BIG DIGIT CLASS */
 /* CREATE  2021.02.06      */
-/* REVISED 2021.05.27      */
-/* Ver 0.9.6               */
+/* REVISED 2022.01.13      */
+/* Ver 0.9.7               */
 /* Original by K-ARAI      */
 
 
@@ -86,6 +86,8 @@ class FloatedBigDigit32 {
 
         int Set(const char* str);
         int Copy(FloatedBigDigit32* V);
+
+        int SetFull();
 
         int size();
         int valid_size();
