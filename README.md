@@ -21,3 +21,8 @@ Sinh Cosh Tanh Asinh Acosh Atanh
 INITIAL VERSION IS READY !
 
 EASY TO USE ! SEE SAMPLE CODES ...
+
+Ｃ＋＋で書かれた巨大桁計算ライブラリです。
+一般的な数学関数を装備しています。
+仕様については同梱のtxtファイル参照。
+
