@@ -26,3 +26,8 @@ EASY TO USE ! SEE SAMPLE CODES ...
 一般的な数学関数を装備しています。
 仕様については同梱のtxtファイル参照。
 
+EXECUTE:
+![スクリーンショット 2025-02-11 145517](https://github.com/user-attachments/assets/6e91d9ae-7bf5-4903-84ae-d9e7e17225ce)
+
+SOURCE:
+![スクリーンショット 2025-02-11 145132](https://github.com/user-attachments/assets/9af02765-b357-4432-b666-d65db112752a)
